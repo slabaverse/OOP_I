@@ -19,6 +19,12 @@ public class FollowDAO implements InterfaceDAO<Follow> {
     }
 
     @Override
+    public void update(Follow reference) {
+	// TODO Auto-generated method stub
+	
+    }
+    
+    @Override
     public List<Follow> all() {
 	// TODO Auto-generated method stub
 	return null;

@@ -18,10 +18,16 @@ public class DevEventsDAO implements InterfaceDAO<DevEvents>{
 	
     }
 
+
+    @Override
+    public void update(DevEvents reference) {
+	// TODO Auto-generated method stub
+	
+    }
+
     @Override
     public List<DevEvents> all() {
 	// TODO Auto-generated method stub
 	return null;
     }
-
 }

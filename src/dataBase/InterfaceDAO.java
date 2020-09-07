@@ -25,8 +25,11 @@ public interface InterfaceDAO<T> {
 	public void add(T reference);
 
 	public void remove(T reference);
+	
+	public void update(T reference);
 
 	public List<T> all();
+	
 
 	/*
 	 * Como o método para recuperar um único objeto depende do identificador de cada

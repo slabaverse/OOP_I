@@ -19,11 +19,15 @@ public class CommentDAO implements InterfaceDAO<Comment> {
     }
 
     @Override
+    public void update(Comment reference) {
+	// TODO Auto-generated method stub
+	
+    }
+
+    @Override
     public List<Comment> all() {
 	// TODO Auto-generated method stub
 	return null;
     }
-
-
 
 }

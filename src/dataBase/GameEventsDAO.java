@@ -18,10 +18,16 @@ public class GameEventsDAO implements InterfaceDAO<GameEvents> {
 	
     }
 
+
+    @Override
+    public void update(GameEvents reference) {
+	// TODO Auto-generated method stub
+	
+    }
+
     @Override
     public List<GameEvents> all() {
 	// TODO Auto-generated method stub
 	return null;
     }
-
 }
