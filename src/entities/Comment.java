@@ -23,6 +23,18 @@ public class Comment {
 	this.text = text;
     }
 
+    public Comment(Integer id) {
+	super();
+	this.id = id;
+    }
+
+    public Comment(String username, String text) {
+	super();
+	User user = new User(username);
+	this.user = user;
+	this.text = text;
+    }
+
     public Integer getId() {
 	return id;
     }

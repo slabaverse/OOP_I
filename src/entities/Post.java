@@ -39,6 +39,13 @@ public class Post {
 	this.comments = new ArrayList<>();
     }
 
+    public Post(Integer idPost, User user, String content) {
+	super();
+	this.idPost = idPost;
+	this.user = user;
+	this.content = content;
+    }
+
     public User getUser() {
 	return user;
     }

@@ -55,6 +55,11 @@ public class User extends Comment {
 	this.dev = new ArrayList<>();
 	this.game = new ArrayList<>();
     }
+    
+    public User(String name) {
+	this.name = name;
+    }
+
 
     public String getUsername() {
 	return username;

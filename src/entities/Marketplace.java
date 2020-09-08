@@ -52,6 +52,26 @@ public class Marketplace {
 	this.comments = new ArrayList<>();
     }
     
+    public Marketplace(Integer id, User user, String product, Double price, String description,
+	    List<Comment> commentMarketplace) {
+	super();
+	this.id = id;
+	this.user = user;
+	this.product = product;
+	this.price = price;
+	this.description = description;
+	this.comments = new ArrayList<>();
+    }
+
+    public Marketplace(Integer id, User user, String product, Double price, String description) {
+	super();
+	this.id = id;
+	this.user = user;
+	this.product = product;
+	this.price = price;
+	this.description = description;
+    }
+
     public User getUser() {
 	return user;
     }
