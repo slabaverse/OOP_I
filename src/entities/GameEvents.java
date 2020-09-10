@@ -15,6 +15,12 @@ public class GameEvents extends Events {
 	this.gameName = gameName;
     }
 
+    public GameEvents(Integer eventId, User user, String eventName, String eventDate, String eventLocal, String eventDescription,
+	    String gameName) {
+	super(user, eventId, eventName, eventDate, eventLocal, eventDescription);
+	this.gameName = gameName;
+    }
+
     public String getGameName() {
 	return gameName;
     }
