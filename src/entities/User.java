@@ -7,6 +7,7 @@ import java.util.List;
 
 public class User extends Comment {
 
+    private Integer id;
     private String username;
     private String password;
     private String name;
@@ -31,6 +32,21 @@ public class User extends Comment {
 	super();
     }
 
+    public User(Integer id, String username, String password, String name, String birthdate, String relationship) {
+	super();
+	this.id = id;
+	this.username = username;
+	this.password = password;
+	this.name = name;
+	this.birthdate = birthdate;
+	this.relationship = relationship;
+	this.marketplace = new ArrayList<>();
+	this.posts = new ArrayList<>();
+	this.followers = new ArrayList<>();
+	this.dev = new ArrayList<>();
+	this.game = new ArrayList<>();
+    }
+    
     public User(String username, String password, String name, String birthdate, String relationship) {
 	super();
 	this.username = username;
@@ -45,8 +61,8 @@ public class User extends Comment {
 	this.game = new ArrayList<>();
     }
 
-    public User(String name, String birthdate, String relationship) {
-	this.name = name;
+    public User(String username, String birthdate, String relationship) {
+	this.username = username;
 	this.birthdate = birthdate;
 	this.relationship = relationship;
 	this.marketplace = new ArrayList<>();
@@ -60,6 +76,19 @@ public class User extends Comment {
 	this.name = name;
     }
 
+    public User(Integer id, String username) {
+	super();
+	this.id = id;
+	this.username = username;
+    }
+
+    public Integer getId() {
+	return id;
+    }
+
+    public void setId(Integer id) {
+	this.id = id;
+    }
 
     public String getUsername() {
 	return username;

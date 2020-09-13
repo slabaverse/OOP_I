@@ -72,6 +72,7 @@ public class Marketplace {
 	this.description = description;
     }
 
+
     public User getUser() {
 	return user;
     }
