@@ -57,7 +57,7 @@ public class MarketplaceDAO implements InterfaceDAO<Marketplace> {
 		String product = resultSet.getString("product");
 		Double price = resultSet.getDouble("price");
 		String description = resultSet.getString("description");
-		retrn.add(new Marketplace(id, new UserDAO().get(username).getUser(), product, price, description));
+		retrn.add(new Marketplace(id, new UserDAO().getByName(username), product, price, description));
 	    }
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
@@ -77,7 +77,7 @@ public class MarketplaceDAO implements InterfaceDAO<Marketplace> {
 		String product = resultSet.getString("product");
 		Double price = resultSet.getDouble("price");
 		String description = resultSet.getString("description");
-		retrn = new Marketplace(id_1, new UserDAO().get(username).getUser(), product, price, description);
+		retrn = new Marketplace(id_1, new UserDAO().getByName(username), product, price, description);
 	    }
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {

@@ -86,42 +86,39 @@ public class UtilBD {
     private static void createUserMarketplace(Statement stm) throws SQLException {
 	stm.executeUpdate("DROP TABLE IF EXISTS UserMarketplace");
 	stm.executeUpdate(
-		"CREATE TABLE UserMarketplace (" + "user_fk VARCHAR(50) NOT NULL," + "mkt_fk INTEGER NOT NULL,"
-			+ "CONSTRAINT user_fk FOREIGN KEY (user_fk) REFERENCES User (username) ON DELETE CASCADE, "
+		"CREATE TABLE UserMarketplace (" + "user_fk id INTEGER NOT NULL," + "mkt_fk INTEGER NOT NULL,"
+			+ "CONSTRAINT user_fk FOREIGN KEY (user_fk) REFERENCES User (id) ON DELETE CASCADE, "
 			+ "CONSTRAINT mkt_fk FOREIGN KEY (mkt_fk) REFERENCES Marketplace (id) ON DELETE CASCADE);");
     }
 
     private static void createUserGameEvents(Statement stm) throws SQLException {
 	stm.executeUpdate("DROP TABLE IF EXISTS UserGameEvents");
-	stm.executeUpdate("CREATE TABLE UserGameEvents (" + "user_fk VARCHAR(30) NOT NULL,"
+	stm.executeUpdate("CREATE TABLE UserGameEvents (" + "user_fk id INTEGER NOT NULL,"
 		+ "gameevents_fk INTEGER NOT NULL,"
-		+ "CONSTRAINT user_fk FOREIGN KEY (user_fk) REFERENCES User (Username) ON DELETE CASCADE, "
+		+ "CONSTRAINT user_fk FOREIGN KEY (user_fk) REFERENCES User (id) ON DELETE CASCADE, "
 		+ "CONSTRAINT gameevents_fk FOREIGN KEY (gameevents_fk) REFERENCES GameEvents (EventID) ON DELETE CASCADE);");
     }
 
     private static void createUserDevEvents(Statement stm) throws SQLException {
 	stm.executeUpdate("DROP TABLE IF EXISTS UserDevEvents");
-	stm.executeUpdate("CREATE TABLE UserDevEvents (" + "user_fk VARCHAR(30) NOT NULL,"
+	stm.executeUpdate("CREATE TABLE UserDevEvents (" + "user_fk id INTEGER NOT NULL,"
 		+ "devevents_fk INTEGER NOT NULL,"
-		+ "CONSTRAINT user_fk FOREIGN KEY (user_fk) REFERENCES User (Username) ON DELETE CASCADE, "
+		+ "CONSTRAINT user_fk FOREIGN KEY (user_fk) REFERENCES User (id) ON DELETE CASCADE, "
 		+ "CONSTRAINT devevents_fk FOREIGN KEY (devevents_fk) REFERENCES DevEvents (EventID) ON DELETE CASCADE);");
     }
 
-    /*
-     * private static void createUserFollow(Statement stm) throws SQLException {
-     * stm.executeUpdate("DROP TABLE IF EXISTS UserFollow");
-     * stm.executeUpdate("CREATE TABLE UserFollow (" +
-     * "user_fk VARCHAR(30) NOT NULL," + "follow_fk VARCHAR(50) NOT NULL," +
-     * "CONSTRAINT user_fk FOREIGN KEY (user_fk) REFERENCES User (Username) ON DELETE CASCADE, "
-     * +
-     * "CONSTRAINT follow_fk FOREIGN KEY (follow_fk) REFERENCES Follow (Username) ON DELETE CASCADE);"
-     * ); }
-     */
+    private static void createUserFollow(Statement stm) throws SQLException {
+	stm.executeUpdate("DROP TABLE IF EXISTS UserFollow");
+	stm.executeUpdate("CREATE TABLE UserFollow (" + "user_fk id INTEGER NOT NULL,"
+		+ "follow_fk VARCHAR(50) NOT NULL,"
+		+ "CONSTRAINT user_fk FOREIGN KEY (user_fk) REFERENCES User (id) ON DELETE CASCADE, "
+		+ "CONSTRAINT follow_fk FOREIGN KEY (follow_fk) REFERENCES Follow (username) ON DELETE CASCADE);");
+    }
 
     private static void createUserPost(Statement stm) throws SQLException {
 	stm.executeUpdate("DROP TABLE IF EXISTS UserPost");
-	stm.executeUpdate("CREATE TABLE UserPost (" + "user_fk VARCHAR(30) NOT NULL," + "post_fk INTEGER NOT NULL,"
-		+ "CONSTRAINT user_fk FOREIGN KEY (user_fk) REFERENCES User (Username) ON DELETE CASCADE, "
+	stm.executeUpdate("CREATE TABLE UserPost (" + "user_fk id INTEGER NOT NULL," + "post_fk INTEGER NOT NULL,"
+		+ "CONSTRAINT user_fk FOREIGN KEY (user_fk) REFERENCES User (id) ON DELETE CASCADE, "
 		+ "CONSTRAINT post_fk FOREIGN KEY (post_fk) REFERENCES Post (ID) ON DELETE CASCADE);");
     }
 
@@ -165,8 +162,10 @@ public class UtilBD {
 
     private static void createFollow(Statement stm) throws SQLException {
 	stm.executeUpdate("DROP TABLE IF EXISTS Follow");
-	stm.executeUpdate("CREATE TABLE Follow (username VARCHAR(50) NOT NULL PRIMARY KEY,"
-		+ "birthdate VARCHAR(10) NOT NULL," + "relationship VARCHAR(30) NOT NULL);");
+	stm.executeUpdate("CREATE TABLE Follow (" + "follower_fk id INTEGER NOT NULL,"
+		+ "followed_fk INTEGER NOT NULL,"
+		+ "CONSTRAINT follower_fk FOREIGN KEY (follower_fk) REFERENCES User (id) ON DELETE CASCADE, "
+		+ "CONSTRAINT followed_fk FOREIGN KEY (followed_fk) REFERENCES User (id) ON DELETE CASCADE);");
     }
 
     private static void createPost(Statement stm) throws SQLException {

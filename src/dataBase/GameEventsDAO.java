@@ -62,7 +62,7 @@ public class GameEventsDAO implements InterfaceDAO<GameEvents> {
 		String eventLocal = resultSet.getString("eventLocal");
 		String eventDescription = resultSet.getString("eventDescription");
 		String gameName = resultSet.getString("gameName");
-		retrn.add(new GameEvents(id, new UserDAO().get(username).getUser(), eventName, eventDate, eventLocal,
+		retrn.add(new GameEvents(id, new UserDAO().getByName(username), eventName, eventDate, eventLocal,
 			eventDescription, gameName));
 	    }
 	    resultSet.getStatement().close();
@@ -86,7 +86,7 @@ public class GameEventsDAO implements InterfaceDAO<GameEvents> {
 		String eventLocal = resultSet.getString("eventLocal");
 		String eventDescription = resultSet.getString("eventDescription");
 		String gameName = resultSet.getString("gameName");
-		retrn = new GameEvents(idGe, new UserDAO().get(username).getUser(), eventName, eventDate, eventLocal,
+		retrn = new GameEvents(idGe, new UserDAO().getByName(username), eventName, eventDate, eventLocal,
 			eventDescription, gameName);
 	    }
 	    resultSet.getStatement().close();

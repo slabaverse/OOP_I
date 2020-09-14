@@ -60,7 +60,7 @@ public class DevEventsDAO implements InterfaceDAO<DevEvents> {
 		String eventDate = resultSet.getString("eventDate");
 		String eventLocal = resultSet.getString("eventLocal");
 		String eventDescription = resultSet.getString("eventDescription");
-		retrn.add(new DevEvents(id, new UserDAO().get(username).getUser(), eventName, eventDate, eventLocal,
+		retrn.add(new DevEvents(id, new UserDAO().getByName(username), eventName, eventDate, eventLocal,
 			eventDescription));
 	    }
 	    resultSet.getStatement().close();
@@ -83,7 +83,7 @@ public class DevEventsDAO implements InterfaceDAO<DevEvents> {
 		String eventDate = resultSet.getString("eventDate");
 		String eventLocal = resultSet.getString("eventLocal");
 		String eventDescription = resultSet.getString("eventDescription");
-		retrn = new DevEvents(idDe, new UserDAO().get(username).getUser(), eventName, eventDate, eventLocal,
+		retrn = new DevEvents(idDe, new UserDAO().getByName(username), eventName, eventDate, eventLocal,
 			eventDescription);
 	    }
 	    resultSet.getStatement().close();

@@ -82,6 +82,12 @@ public class User extends Comment {
 	this.username = username;
     }
 
+//    public User(User user, String birthdate, String relationship) {
+//	this.username = username;
+//	this.birthdate = birthdate;
+//	this.relationship = relationship;
+//    }
+
     public Integer getId() {
 	return id;
     }
@@ -264,39 +270,39 @@ public class User extends Comment {
     }
 
     // FRIENDS
-
-    public void showFollowers() {
-	for (int i = 0; i < followers.size(); i++) {
-	    System.out.println();
-	    System.out.println("#" + followers.get(i).getName() + ", Birthday: " + followers.get(i).getBirthdate()
-		    + " , Relationship status: " + followers.get(i).getRelationship());
-	}
-    }
-
-    public void showFriends() {
-	System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-	System.out.println("                                                                   {FRIENDS}");
-	for (int i = 0; i < followers.size(); i++) {
-	    System.out.print(followers.get(i).getName() + " / ");
-	}
-	System.out.println();
-    }
-
-    public void follow(String name, String birthdate, String relationship) {
-	followers.add(new Follow(name, birthdate, relationship));
-	System.out.println("{FRIEND ADDED!}");
-    }
-
-    public void unfollow(String nameFollower) {
-	for (int i = 0; i < followers.size(); i++) {
-	    if (followers.get(i).getName().contentEquals(nameFollower)) {
-		followers.remove(i);
-		System.out.println("{FRIEND REMOVED!}");
-	    } else {
-		System.out.println("{YOU DON'T HAVE A FRIEND WITH THIS NAME}");
-	    }
-	}
-    }
+//
+//    public void showFollowers() {
+//	for (int i = 0; i < followers.size(); i++) {
+//	    System.out.println();
+//	    System.out.println("#" + followers.get(i).getName() + ", Birthday: " + followers.get(i).getBirthdate()
+//		    + " , Relationship status: " + followers.get(i).getRelationship());
+//	}
+//    }
+//
+//    public void showFriends() {
+//	System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+//	System.out.println("                                                                   {FRIENDS}");
+//	for (int i = 0; i < followers.size(); i++) {
+//	    System.out.print(followers.get(i).getName() + " / ");
+//	}
+//	System.out.println();
+//    }
+//
+//    public void follow(String name, String birthdate, String relationship) {
+//	followers.add(new Follow(name, birthdate, relationship));
+//	System.out.println("{FRIEND ADDED!}");
+//    }
+//
+//    public void unfollow(String nameFollower) {
+//	for (int i = 0; i < followers.size(); i++) {
+//	    if (followers.get(i).getName().contentEquals(nameFollower)) {
+//		followers.remove(i);
+//		System.out.println("{FRIEND REMOVED!}");
+//	    } else {
+//		System.out.println("{YOU DON'T HAVE A FRIEND WITH THIS NAME}");
+//	    }
+//	}
+//    }
 
     // DEV EVENTS
 

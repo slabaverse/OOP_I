@@ -39,7 +39,7 @@ public class UserDAO implements InterfaceDAO<User> {
 	    System.err.println("{ COULDN'T SET USER }");
 	}
     }
-    
+
     @Override
     public void remove(User user) {
 	try {
@@ -72,15 +72,32 @@ public class UserDAO implements InterfaceDAO<User> {
 	return retrn;
     }
 
-    public User get(String username) {
+    public User get(Integer id) {
+	User retrn = null;
+	try {
+	    String sql = "SELECT id, username FROM User WHERE id = " + id + ";";
+	    ResultSet resultSet = UtilBD.consultDB(sql);
+	    while (resultSet.next()) {
+		Integer id2 = resultSet.getInt("id");
+		String usrname = resultSet.getString("username");
+		retrn = new User(id2, usrname);
+	    }
+	    resultSet.getStatement().close();
+	} catch (SQLException e) {
+	    System.err.println("{ IMPOSSIBLE TO VIEW USER}");
+	}
+	return retrn;
+    }
+    
+    public User getByName(String username) {
 	User retrn = null;
 	try {
 	    String sql = "SELECT id, username FROM User WHERE username = '" + username + "'";
 	    ResultSet resultSet = UtilBD.consultDB(sql);
 	    while (resultSet.next()) {
-		Integer id = resultSet.getInt("id");
+		Integer id2 = resultSet.getInt("id");
 		String usrname = resultSet.getString("username");
-		retrn = new User(id, usrname);
+		retrn = new User(id2, usrname);
 	    }
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
@@ -92,18 +109,18 @@ public class UserDAO implements InterfaceDAO<User> {
     public List<Marketplace> getMarketplace(User usr) {
 	List<Marketplace> marketplace = new ArrayList<Marketplace>();
 	try {
-	    String sql = "SELECT user_fk FROM UserMarketplace WHERE mkt_fk = " + usr.getId() + ";";
+	    String sql = "SELECT mkt_fk FROM UserMarketplace WHERE user_fk = " + usr.getId() + ";";
 	    ResultSet resultSet = UtilBD.consultDB(sql);
 	    while (resultSet.next()) {
 		sql = "SELECT id, username, product, price, description FROM Marketplace WHERE id = "
 			+ resultSet.getInt("user_fk") + ";";
 		ResultSet mktSet = UtilBD.consultDB(sql);
 		Integer id = mktSet.getInt("id");
-		User username = mktSet.getString("username");
+		User user = new User(mktSet.getString("username"));
 		String product = mktSet.getString("product");
-		String price = mktSet.getString("price");
+		Double price = mktSet.getDouble("price");
 		String description = mktSet.getString("description");
-		marketplace.add(new Marketplace(id, username, product, price, description));
+		marketplace.add(new Marketplace(id, user, product, price, description));
 		mktSet.getStatement().close();
 	    }
 	    resultSet.getStatement().close();
@@ -116,16 +133,15 @@ public class UserDAO implements InterfaceDAO<User> {
     public List<Post> getPost(User usr) {
 	List<Post> post = new ArrayList<Post>();
 	try {
-	    String sql = "SELECT user_fk FROM UserPost WHERE post_fk = " + usr.getId() + ";";
+	    String sql = "SELECT post_fk FROM UserPost WHERE user_fk = " + usr.getId() + ";";
 	    ResultSet resultSet = UtilBD.consultDB(sql);
 	    while (resultSet.next()) {
 		sql = "SELECT id, username, content FROM Post WHERE id = " + resultSet.getInt("user_fk") + ";";
 		ResultSet postSet = UtilBD.consultDB(sql);
 		Integer id = postSet.getInt("id");
-		User username = postSet.getString("username");
+		User user = new User(postSet.getString("username"));
 		String content = postSet.getString("content");
-
-		post.add(new Post(id, username, content));
+		post.add(new Post(id, user, content));
 		postSet.getStatement().close();
 	    }
 	    resultSet.getStatement().close();
@@ -138,20 +154,20 @@ public class UserDAO implements InterfaceDAO<User> {
     public List<DevEvents> getDevEvents(User usr) {
 	List<DevEvents> devEvents = new ArrayList<DevEvents>();
 	try {
-	    String sql = "SELECT user_fk FROM UserDevEvents WHERE devevents_fk = " + usr.getId() + ";";
+	    String sql = "SELECT devevents_fk FROM UserDevEvents WHERE user_fk = " + usr.getId() + ";";
 	    ResultSet resultSet = UtilBD.consultDB(sql);
 	    while (resultSet.next()) {
 		sql = "SELECT id, username, eventName, eventDate, eventLocal, eventDescription FROM DevEvents WHERE id = "
 			+ resultSet.getInt("user_fk") + ";";
 		ResultSet devSet = UtilBD.consultDB(sql);
 		Integer id = devSet.getInt("id");
-		User username = devSet.getString("username");
+		User user = new User(devSet.getString("username"));
 		String eventName = devSet.getString("eventName");
 		String eventDate = devSet.getString("eventDate");
 		String eventLocal = devSet.getString("eventLocal");
 		String eventDescription = devSet.getString("eventDescription");
 
-		devEvents.add(new DevEvents(id, username, eventName, eventDate, eventLocal, eventDescription));
+		devEvents.add(new DevEvents(id, user, eventName, eventDate, eventLocal, eventDescription));
 		devSet.getStatement().close();
 	    }
 	    resultSet.getStatement().close();
@@ -161,19 +177,17 @@ public class UserDAO implements InterfaceDAO<User> {
 	return devEvents;
     }
 
-    private List<Follow> followers;
-
     public List<GameEvents> getGameEvents(User usr) {
 	List<GameEvents> gameEvents = new ArrayList<GameEvents>();
 	try {
-	    String sql = "SELECT user_fk FROM UserGameEvents WHERE gameevents_fk = " + usr.getId() + ";";
+	    String sql = "SELECT gameevents_fk FROM UserGameEvents WHERE user_fk = " + usr.getId() + ";";
 	    ResultSet resultSet = UtilBD.consultDB(sql);
 	    while (resultSet.next()) {
-		sql = "SELECT id, username, eventName, eventDate, eventLocal, eventDescription, gameName  FROM GameEvents WHERE id = "
+		sql = "SELECT id, username, eventName, eventDate, eventLocal, eventDescription, gameName FROM GameEvents WHERE id = "
 			+ resultSet.getInt("user_fk") + ";";
 		ResultSet gameSet = UtilBD.consultDB(sql);
 		Integer id = gameSet.getInt("id");
-		User username = gameSet.getString("username");
+		User user = new User(gameSet.getString("username"));
 		String eventName = gameSet.getString("eventName");
 		String eventDate = gameSet.getString("eventDate");
 		String eventLocal = gameSet.getString("eventLocal");
@@ -181,7 +195,7 @@ public class UserDAO implements InterfaceDAO<User> {
 		String gameName = gameSet.getString("gameName");
 
 		gameEvents.add(
-			new GameEvents(id, username, eventName, eventDate, eventLocal, eventDescription, gameName));
+			new GameEvents(id, user, eventName, eventDate, eventLocal, eventDescription, gameName));
 		gameSet.getStatement().close();
 	    }
 	    resultSet.getStatement().close();
@@ -190,5 +204,4 @@ public class UserDAO implements InterfaceDAO<User> {
 	}
 	return gameEvents;
     }
-
 }

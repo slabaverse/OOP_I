@@ -53,7 +53,7 @@ public class CommentDAO implements InterfaceDAO<Comment> {
 		Integer id = resultSet.getInt("id");
 		String username = resultSet.getString("username");
 		String text = resultSet.getString("text");
-		retrn.add(new Comment(id, new UserDAO().get(username).getUser(), text));
+		retrn.add(new Comment(id, new UserDAO().getByName(username), text));
 	    }
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
@@ -71,7 +71,7 @@ public class CommentDAO implements InterfaceDAO<Comment> {
 		Integer id_1 = resultSet.getInt("id");
 		String username = resultSet.getString("username");
 		String text = resultSet.getString("text");
-		retrn = new Comment(id_1, new UserDAO().get(username).getUser(), text);
+		retrn = new Comment(id_1, new UserDAO().getByName(username), text);
 	    }
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {

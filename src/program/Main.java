@@ -4,18 +4,33 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import dataBase.CommentDAO;
+import dataBase.DevEventsDAO;
+import dataBase.FollowDAO;
+import dataBase.GameEventsDAO;
+import dataBase.MarketplaceDAO;
+import dataBase.PostDAO;
+import dataBase.UserDAO;
 import dataBase.UtilBD;
 import entities.User;
 
 public class Main {
 
     public static void main(String[] args) {
-	
+
 	UtilBD.initBD();
-	
-	UtilBD.closeConection();
+
+	//UtilBD.closeConection();
 
 	List<User> users = new ArrayList<>();
+	
+	CommentDAO commentDAO = new CommentDAO();
+	DevEventsDAO devEventsDAO = new DevEventsDAO();
+	FollowDAO followDAO = new FollowDAO();
+	GameEventsDAO gameEventsDAO = new GameEventsDAO();
+	MarketplaceDAO marketplaceDAO = new MarketplaceDAO();
+	PostDAO postDAO = new PostDAO();
+	UserDAO userDAO = new UserDAO();
 
 	int i = 0, loggedUser = -1, choose = 0, tempChoose = 0;
 	char wannaComment = 'y';
@@ -50,7 +65,8 @@ public class Main {
 		    System.out.print("RELATIONSHIP:~$ ");
 		    String relationship = sc.nextLine();
 		    System.out.println();
-		    users.add(new User(username, password, name, birthdate, relationship));
+		    User newUser = new User(username, password, name, birthdate, relationship);
+		    userDAO.add(newUser);
 		    break;
 		case 2:
 		    sc.nextLine();
@@ -545,7 +561,7 @@ public class Main {
 			System.out.print("FRIEND NAME:~$ ");
 			String friendNameRemove = sc.nextLine();
 			for (i = 0; i < users.size(); i++) {
-			    if (users.get(loggedUser).getFollowers().get(i).getName().contentEquals(friendNameRemove)) {
+			   if (users.get(loggedUser).getFollowers().get(i).getName().contentEquals(friendNameRemove)) {
 				users.get(loggedUser).unfollow(friendNameRemove);
 				break;
 			    }
@@ -967,6 +983,7 @@ public class Main {
 		    break;
 		}
 	    } while (true);
+	    sc.close();
 	}
     }
 }

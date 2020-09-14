@@ -54,7 +54,7 @@ public class PostDAO implements InterfaceDAO<Post> {
 		Integer id = resultSet.getInt("id");
 		String username = resultSet.getString("username");
 		String content = resultSet.getString("content");
-		retrn.add(new Post(id, new UserDAO().get(username).getUser(), content));
+		retrn.add(new Post(id, new UserDAO().getByName(username), content));
 	    }
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
@@ -72,7 +72,7 @@ public class PostDAO implements InterfaceDAO<Post> {
 		Integer id_1 = resultSet.getInt("id");
 		String username = resultSet.getString("username");
 		String content = resultSet.getString("content");
-		retrn = new Post(id_1, new UserDAO().get(username).getUser(), content);
+		retrn = new Post(id_1, new UserDAO().getByName(username), content);
 	    }
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
