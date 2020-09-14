@@ -88,6 +88,12 @@ public class User extends Comment {
 //	this.relationship = relationship;
 //    }
 
+    public User(String username, String password) {
+	super();
+	this.username = username;
+	this.password = password;
+    }
+
     public Integer getId() {
 	return id;
     }

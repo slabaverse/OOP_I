@@ -12,6 +12,7 @@ import dataBase.MarketplaceDAO;
 import dataBase.PostDAO;
 import dataBase.UserDAO;
 import dataBase.UtilBD;
+import entities.Post;
 import entities.User;
 
 public class Main {
@@ -32,7 +33,8 @@ public class Main {
 	PostDAO postDAO = new PostDAO();
 	UserDAO userDAO = new UserDAO();
 
-	int i = 0, loggedUser = -1, choose = 0, tempChoose = 0;
+	int i = 0, choose = 0, tempChoose = 0;
+	User loggedUser = null;
 	char wannaComment = 'y';
 
 	Scanner sc = new Scanner(System.in);
@@ -54,7 +56,7 @@ public class Main {
 		switch (choose) {
 		case 1:
 		    sc.nextLine();
-		    System.out.print("USER NAME:~$ ");
+		    System.out.print("USERNAME:~$ ");
 		    String username = sc.nextLine();
 		    System.out.print("PASSWORD:~$ ");
 		    String password = sc.nextLine();
@@ -76,16 +78,20 @@ public class Main {
 			System.out.print("PASSWORD:~$ ");
 			String passwordCheck = sc.nextLine();
 			System.out.println();
-			for (i = 0; i < users.size(); i++) {
-			    if (users.get(i).getUsername().contentEquals(usernameCheck)
-				    && users.get(i).getPassword().contentEquals(passwordCheck)) {
-				loggedUser = i;
+			List<User> userList = userDAO.all();
+			
+			
+			
+			for (i = 0; i < userList.size(); i++) {
+			    if (userList.get(i).getUsername().contentEquals(usernameCheck)
+				    && userList.get(i).getPassword().contentEquals(passwordCheck)) {
+				loggedUser = userList.get(i);
 				break;
 			    }
 			}
-		    } while (loggedUser < 0);
+		    } while (loggedUser == null);
 		}
-	    } while (loggedUser < 0);
+	    } while (loggedUser == null);
 
 	    do {
 		System.out.println();
@@ -97,9 +103,12 @@ public class Main {
 		System.out.println("╚══════╝╚═╝  ╚═╝   ╚═╝   ╚═╝  ╚═══╝╚══════╝   ╚═╝       ╚═╝╚═╝    ╚═╝ ");
 		System.out.println("                   {SKYNET(/) - CONNECTING DEV'S}");
 		System.out.println();
-		System.out.println("                    {LOGGED AS " + users.get(loggedUser).getName() + "}");
-		users.get(loggedUser).showFriends();
-		users.get(loggedUser).showPosts();
+		System.out.println("                    {LOGGED AS " + loggedUser.getUsername() + "}");
+		System.out.println();
+		System.out.println();
+		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+		System.out.println();
+		System.out.println(userDAO.getPost(loggedUser));
 		System.out.println();
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		System.out.println("{1} USER SETTINGS");
@@ -113,75 +122,22 @@ public class Main {
 		System.out.println();
 		if (choose == 1) {
 		    System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-		    System.out.println("{WHICH INFORMATION DO YOU WANT TO SET?}");
+		    System.out.println("{SET USER INFORMATIONS}");
 		    System.out.println();
-		    System.out.println("[1] E-MAIL: " + users.get(loggedUser).getUsername());
-		    System.out.println("[2] PASSWORD: " + users.get(loggedUser).getPassword());
-		    System.out.println("[3] NAME: " + users.get(loggedUser).getName());
-		    System.out.println("[4] BIRTHDATE (dd/mm/yyyy): " + users.get(loggedUser).getBirthdate());
-		    System.out.println("[5] RELATIONSHIP: " + users.get(loggedUser).getRelationship());
-		    System.out.println("[6] MAIN MENU");
-		    System.out.print(":~$ ");
-		    tempChoose = sc.nextInt();
-		    switch (tempChoose) {
-		    case 1:
-			System.out.println(
-				"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-			System.out.print("{CURRENT E-MAIL} " + users.get(loggedUser).getUsername());
-			System.out.println();
-			sc.nextLine();
-			System.out.print("NEW E-MAIL:~$ ");
-			String newUsername = sc.nextLine();
-			System.out.println();
-			users.get(loggedUser).setUsername(newUsername);
-			break;
-		    case 2:
-			System.out.println(
-				"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-			System.out.print("{CURRENT PASSWORD} " + users.get(loggedUser).getPassword());
-			System.out.println();
-			sc.nextLine();
-			System.out.print("NEW PASSWORD:~$ ");
-			String newPassword = sc.nextLine();
-			System.out.println();
-			users.get(loggedUser).setPassword(newPassword);
-			break;
-		    case 3:
-			System.out.println(
-				"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-			System.out.print("{CURRENT FULL NAME} " + users.get(loggedUser).getName());
-			System.out.println();
-			sc.nextLine();
-			System.out.print("NEW FULL NAME:~$ ");
-			String newName = sc.nextLine();
-			System.out.println();
-			users.get(loggedUser).setName(newName);
-			break;
-		    case 4:
-			System.out.println(
-				"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-			System.out.print("{CURRENT BIRTHDATE} " + users.get(loggedUser).getBirthdate());
-			System.out.println();
-			sc.nextLine();
-			System.out.print("NEW BIRTHDATE:~$ ");
-			String newBirthdate = sc.nextLine();
-			System.out.println();
-			users.get(loggedUser).setBirthdate(newBirthdate);
-			break;
-		    case 5:
-			System.out.println(
-				"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-			System.out.print("{CURRENT RELATIONSHIP STATUS} " + users.get(loggedUser).getRelationship());
-			System.out.println();
-			sc.nextLine();
-			System.out.print("NEW RELATIONSHIP STATUS:~$ ");
-			String newRelationship = sc.nextLine();
-			System.out.println();
-			users.get(loggedUser).setRelationship(newRelationship);
-			break;
-		    case 6:
-			break;
-		    }
+		    System.out.print("USERNAME:~$ ");
+		    String username = sc.nextLine();
+		    System.out.print("PASSWORD:~$ ");
+		    String password = sc.nextLine();
+		    System.out.print("FULL NAME:~$ ");
+		    String name = sc.nextLine();
+		    System.out.print("BIRTHDATE (dd/MM/yyyy):~$ ");
+		    String birthdate = sc.nextLine();
+		    System.out.print("RELATIONSHIP:~$ ");
+		    String relationship = sc.nextLine();
+		    System.out.println();
+		    User updateUser = new User(username, password, name, birthdate, relationship);
+		    userDAO.update(updateUser);
+		    break;
 		}
 		if (choose == 2) {
 		    System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
@@ -197,19 +153,20 @@ public class Main {
 		    System.out.println();
 		    switch (tempChoose) {
 		    case 1:
-			System.out.print("POST ID:~$ ");
-			Integer idPost = sc.nextInt();
-			sc.nextLine();
 			System.out.print("POST CONTENT:~$ ");
 			String content = sc.nextLine();
-			users.get(loggedUser).addPost(users.get(loggedUser), idPost, content);
-			System.out.println();
+			Post newPost = new Post(loggedUser, content);
+			postDAO.add(newPost);
 			break;
 		    case 2:
-			if (users.get(loggedUser).getPosts().isEmpty()) {
+			if (userDAO.getPost(loggedUser).isEmpty()) {
 			    System.out.println("{YOU DON'T HAVE ANY POST YET}");
 			} else {
-			    users.get(loggedUser).showPosts();
+			    List<Post> postList = userDAO.getPost(loggedUser);
+			    for(i=0; i< postList.size(); i++) {
+				System.out.println("Post number# " + (i+1));
+				System.out.println("User: " + postList.get(i).getUser().getUsername());
+			    }
 			    do {
 				System.out.println();
 				System.out.println("{1} EDIT POST ~ {2} REMOVE POST ~ {3} MAIN MENU");
@@ -218,23 +175,24 @@ public class Main {
 				switch (tempChoose) {
 				case 1:
 				    sc.nextLine();
-				    users.get(loggedUser).showYourPosts();
 				    System.out.println(
 					    "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-				    System.out.print("SELECT THE ID OF THE POST THAT YOU WANT TO EDIT:~$ ");
-				    Integer postId = sc.nextInt();
+				    System.out.print("SELECT THE POST NUMBER THAT YOU WANT TO EDIT:~$ ");
+				    Integer postNum = sc.nextInt();
+				    postNum --;
 				    System.out.println();
 				    sc.nextLine();
+
 				    System.out.print("WRITE A NEW CONTENT:~$ ");
-				    String editedContent = sc.nextLine();
-				    users.get(loggedUser).editPost(postId, editedContent);
+				    postList.get(postNum).setContent(sc.nextLine());
+				    postDAO.update(postList.get(postNum));
 				    break;
 				case 2:
 				    sc.nextLine();
-				    users.get(loggedUser).showPosts();
-				    System.out.print("SELECT THE ID OF THE POST THAT YOU WANT TO REMOVE:~$ ");
-				    postId = sc.nextInt();
-				    users.get(loggedUser).removePost(postId);
+				    System.out.print("SELECT THE POST NUMBER THAT YOU WANT TO REMOVE:~$ ");
+				    Integer postNumRemove = sc.nextInt();
+				    postNumRemove --;
+				    postDAO.remove(postList.get(postNumRemove));
 				    break;
 				case 3:
 				    break;
@@ -243,12 +201,14 @@ public class Main {
 			}
 			break;
 		    case 3:
-			for (i = 0; i < users.size(); i++) {
-			    if (users.get(i).getPosts().isEmpty()) {
-
-			    } else {
-				users.get(i).showPosts();
-				System.out.println();
+			List<Post> allPost = postDAO.all();
+			for (i=0; i<allPost.size(); i++) {
+			    System.out.println("Post Number: " + (i+1));
+			    System.out.println("Username: " + allPost.get(i).getUser().getUsername());
+			    System.out.println("Content: " + allPost.get(i).getContent());
+			    for(int j=0; j<allPost.get(i).getComments().size(); j++) {
+				System.out.println("Username: " + allPost.get(i).getComments().get(j).getUser().getUsername());
+				System.out.println("Content: " + allPost.get(i).getComments().get(j).getText());
 			    }
 			}
 			do {
@@ -266,21 +226,12 @@ public class Main {
 					"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 				while (wannaComment == 'Y' || wannaComment == 'y') {
 				    sc.nextLine();
-				    System.out.print("SELECT THE ID OF THE POST THAT YOU WANT TO COMMENT:~$ ");
+				    System.out.print("SELECT POST NUMBER THAT YOU WANT TO COMMENT:~$ ");
 				    Integer idPostComment = sc.nextInt();
-				    System.out.print("COMMENT ID:~$ ");
-				    Integer idComment = sc.nextInt();
-				    sc.nextLine();
+				    idPostComment --;
 				    System.out.print("COMMENT TEXT:~$ ");
 				    String textComment = sc.nextLine();
-				    for (i = 0; i < users.size(); i++) {
-					for (int j = 0; j < users.get(i).getPosts().size(); j++) {
-					    if (users.get(i).getPosts().get(j).getIdPost() == idPostComment) {
-						users.get(i).getPosts().get(j).addComment(idComment,
-							users.get(loggedUser), textComment);
-					    }
-					}
-				    }
+				    Post commentPost = allPost.get(idPostComment);
 				    System.out.println(
 					    "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 				    System.out.print("ANOTHER COMMENT (Y/n):~$ ");

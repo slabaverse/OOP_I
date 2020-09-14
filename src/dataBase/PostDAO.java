@@ -54,7 +54,9 @@ public class PostDAO implements InterfaceDAO<Post> {
 		Integer id = resultSet.getInt("id");
 		String username = resultSet.getString("username");
 		String content = resultSet.getString("content");
-		retrn.add(new Post(id, new UserDAO().getByName(username), content));
+		Post post = new Post(id, new UserDAO().getByName(username), content);
+		post.setComment(getComments(post));
+		retrn.add(post);
 	    }
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {

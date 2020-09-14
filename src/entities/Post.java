@@ -7,8 +7,8 @@ import java.util.List;
 
 public class Post {
 
-    private User user;
     private Integer idPost;
+    private User user;
     private String content;
 
     private List<Comment> comments;
@@ -45,6 +45,22 @@ public class Post {
 	this.user = user;
 	this.content = content;
     }
+    
+    public Post(Integer idPost, String content) {
+	super();
+	this.idPost = idPost;
+	this.content = content;
+    }
+
+    public Post(String content) {
+	super();
+	this.content = content;
+    }
+
+    public Post(User user, String content) {
+	this.user = user;
+	this.content = content;
+    }
 
     public User getUser() {
 	return user;
@@ -70,6 +86,10 @@ public class Post {
 	return comments;
     }
 
+    public void setComment(List<Comment> comment) {
+	this.comments = comment;
+    }
+    
     public void addComment(Integer id, User user, String text) {
 	comments.add(new Comment(id, user, text));
     }
