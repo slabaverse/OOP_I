@@ -89,6 +89,7 @@ public class UserDAO implements InterfaceDAO<User> {
 	return retrn;
     }
     
+ 
     public User getByName(String username) {
 	User retrn = null;
 	try {
@@ -204,4 +205,29 @@ public class UserDAO implements InterfaceDAO<User> {
 	}
 	return gameEvents;
     }
+    
+    public List<User> getFollowed(User usr) {
+   	List<User> followed = new ArrayList<User>();
+   	try {
+   	    String sql = "SELECT followed_fk FROM Follow WHERE follower_fk = " + usr.getId() + ";";
+   	    ResultSet resultSet = UtilBD.consultDB(sql);
+   	    while (resultSet.next()) {
+   		sql = "SELECT id, username, name, birthdate, relationship FROM User WHERE id = "
+   			+ resultSet.getInt("followed_fk") + ";";
+   		ResultSet userSet = UtilBD.consultDB(sql);
+   		Integer id = userSet.getInt("id");
+   		String username = userSet.getString("username");
+   		String name = userSet.getString("name");
+   		String birthdate = userSet.getString("birthdate");
+   		String relationship = userSet.getString("relationship");
+
+   		followed.add(new User(id, username, name, birthdate, relationship));
+   		userSet.getStatement().close();
+   	    }
+   	    resultSet.getStatement().close();
+   	} catch (SQLException e) {
+   	    System.err.println("{ COULDN'T SHOW FOLLOWED }");
+   	}
+   	return followed;
+       }
 }

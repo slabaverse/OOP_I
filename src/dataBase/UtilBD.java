@@ -65,7 +65,6 @@ public class UtilBD {
 	    createCommentGameEvents(stm);
 	    createUserDevEvents(stm);
 	    createCommentDevEvents(stm);
-	    createUserFollow(stm);
 	    createUserPost(stm);
 	    createCommentPost(stm);
 	    stm.executeUpdate("PRAGMA foreign_keys=ON");
@@ -81,15 +80,15 @@ public class UtilBD {
 	stm.executeUpdate("CREATE TABLE User (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
 		+ "username VARCHAR(50) NOT NULL, " + " password VARCHAR(50) NOT NULL," + " name VARCHAR(150) NOT NULL,"
 		+ " birthdate VARCHAR(10) NOT NULL," + " relationship VARCHAR (50) NOT NULL);");
-	stm.executeUpdate("INSERT INTO User " + "VALUES ('@adam','123456','Adam Slabadack','05/08/1989','Single')");
+	stm.executeUpdate("INSERT INTO User (username, password, name, birthdate, relationship) "
+		+ "VALUES('arslabadack','123456','Adam Slabadack','05/08/1989','Single')");
     }
 
     private static void createUserMarketplace(Statement stm) throws SQLException {
 	stm.executeUpdate("DROP TABLE IF EXISTS UserMarketplace");
-	stm.executeUpdate(
-		"CREATE TABLE UserMarketplace (" + "user_fk INTEGER NOT NULL," + "mkt_fk INTEGER NOT NULL,"
-			+ "CONSTRAINT user_fk FOREIGN KEY (user_fk) REFERENCES User (id) ON DELETE CASCADE, "
-			+ "CONSTRAINT mkt_fk FOREIGN KEY (mkt_fk) REFERENCES Marketplace (id) ON DELETE CASCADE);");
+	stm.executeUpdate("CREATE TABLE UserMarketplace (" + "user_fk INTEGER NOT NULL," + "mkt_fk INTEGER NOT NULL,"
+		+ "CONSTRAINT user_fk FOREIGN KEY (user_fk) REFERENCES User (id) ON DELETE CASCADE, "
+		+ "CONSTRAINT mkt_fk FOREIGN KEY (mkt_fk) REFERENCES Marketplace (id) ON DELETE CASCADE);");
     }
 
     private static void createUserGameEvents(Statement stm) throws SQLException {
@@ -108,14 +107,6 @@ public class UtilBD {
 		+ "CONSTRAINT devevents_fk FOREIGN KEY (devevents_fk) REFERENCES DevEvents (id) ON DELETE CASCADE);");
     }
 
-    private static void createUserFollow(Statement stm) throws SQLException {
-	stm.executeUpdate("DROP TABLE IF EXISTS UserFollow");
-	stm.executeUpdate("CREATE TABLE UserFollow (" + "user_fk INTEGER NOT NULL,"
-		+ "follow_fk VARCHAR(50) NOT NULL,"
-		+ "CONSTRAINT user_fk FOREIGN KEY (user_fk) REFERENCES User (id) ON DELETE CASCADE, "
-		+ "CONSTRAINT follow_fk FOREIGN KEY (follow_fk) REFERENCES Follow (username) ON DELETE CASCADE);");
-    }
-
     private static void createUserPost(Statement stm) throws SQLException {
 	stm.executeUpdate("DROP TABLE IF EXISTS UserPost");
 	stm.executeUpdate("CREATE TABLE UserPost (" + "user_fk INTEGER NOT NULL," + "post_fk INTEGER NOT NULL,"
@@ -129,7 +120,7 @@ public class UtilBD {
 		+ "username VARCHAR(50) FOREIGN KEY (username) REFERENCES User (username),"
 		+ "product VARCHAR(100) NOT NULL," + "price DOUBLE," + "description VARCHAR(300) NOT NULL);");
 	stm.executeUpdate("INSERT INTO Marketplace (product, price, description) "
-		+ "VALUES ('PlayStation 5', 4500.00,'New Sony console released in 2020')");
+		+ "VALUES('PlayStation 5', 4500.00,'New Sony console released in 2020')");
     }
 
     private static void createGameEvents(Statement stm) throws SQLException {
@@ -140,10 +131,10 @@ public class UtilBD {
 		+ "eventLocal VARCHAR(150) NOT NULL," + "eventDescription VARCHAR(300) NOT NULL,"
 		+ "gameName VARCHAR(150) NOT NULL);");
 	stm.executeUpdate("INSERT INTO GameEvents (eventName, eventDate, eventLocal, eventDescription, GameName) "
-		+ "VALUES ('CSGO Championship','10/11/2020','Alianz Arena - München, DE',"
+		+ "VALUES('CSGO Championship','10/11/2020','Alianz Arena - München, DE',"
 		+ "'The great Deutsch Counter Strike Championship is finally here!','Counter Strike Global Offensive')");
 	stm.executeUpdate("INSERT INTO GameEvents (eventName, eventDate, eventLocal, eventDescription, GameName) "
-		+ "VALUES ('The Crazy FortNite','14/11/2020','Alianz Arena - München, DE',"
+		+ "VALUES('The Crazy FortNite','14/11/2020','Alianz Arena - München, DE',"
 		+ "'A FortNite event, join with your squad!','FortNite')");
     }
 
@@ -157,14 +148,13 @@ public class UtilBD {
 		+ "VALUES('Google Hackathon','08/05/2021','GooglePlex - San Francisco, US',"
 		+ "'Come and show your skills to the world!')");
 	stm.executeUpdate("INSERT INTO DevEvents (eventname, eventdate, eventlocal, eventdescription) "
-		+ "VALUES ('Microsoft Development Day','21/08/2021','Santa Catarina Federal University - Florianópolis, BR',"
+		+ "VALUES('Microsoft Development Day','21/08/2021','Santa Catarina Federal University - Florianópolis, BR',"
 		+ "'Great names of Microsoft to explain the future of programing')");
     }
 
     private static void createFollow(Statement stm) throws SQLException {
 	stm.executeUpdate("DROP TABLE IF EXISTS Follow");
-	stm.executeUpdate("CREATE TABLE Follow (" + "follower_fk INTEGER NOT NULL,"
-		+ "followed_fk INTEGER NOT NULL,"
+	stm.executeUpdate("CREATE TABLE Follow (" + "follower_fk INTEGER NOT NULL," + "followed_fk INTEGER NOT NULL,"
 		+ "CONSTRAINT follower_fk FOREIGN KEY (follower_fk) REFERENCES User (id) ON DELETE CASCADE, "
 		+ "CONSTRAINT followed_fk FOREIGN KEY (followed_fk) REFERENCES User (id) ON DELETE CASCADE);");
     }

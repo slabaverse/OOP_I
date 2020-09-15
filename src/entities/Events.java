@@ -35,6 +35,16 @@ public abstract class Events {
 	this.eventDescription = eventDescription;
 	this.comments = new ArrayList<>();
     }
+    
+    public Events(User user, String eventName, String eventDate, String eventLocal,
+	    String eventDescription) {
+	super();
+	this.user = user;
+	this.eventName = eventName;
+	this.eventDate = eventDate;
+	this.eventLocal = eventLocal;
+	this.eventDescription = eventDescription;
+    }
 
     public Events(User user, Integer eventId, String eventName, String eventDescription) {
 	super();
@@ -92,7 +102,12 @@ public abstract class Events {
     public List<Comment> getComments() {
 	return comments;
     }
-
+    
+ 
+    public void setComment(List<Comment> comment) {
+	this.comments = comment;
+    }
+    
     public abstract void addComment(Integer id, User user, String text);
 
     public abstract void editComment(Integer id, String text);

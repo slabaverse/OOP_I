@@ -29,7 +29,7 @@ public class FollowDAO implements InterfaceDAO<Follow> {
     @Override
     public void remove(Follow follow) {
 	try {
-	    String sql = "DELETE FROM Follow WHERE followed_fk = " + follow.getFollow().getId() + ";";
+	    String sql = "DELETE FROM Follow WHERE followed_fk = " + follow.getFollow().getId() + " AND follower_fk = " + follow.getFollower().getId() + ";";
 	    UtilBD.updateDB(sql);
 	} catch (SQLException e) {
 	    System.err.println("{ COULDN'T REMOVE FRIEND }");

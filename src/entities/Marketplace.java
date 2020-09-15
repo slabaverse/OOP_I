@@ -7,8 +7,8 @@ import java.util.List;
 
 public class Marketplace {
 
-    private User user;
     private Integer id;
+    private User user;
     private String product;
     private Double price;
     private String description;
@@ -46,12 +46,20 @@ public class Marketplace {
 	this.comments = new ArrayList<>();
     }
 
+    public Marketplace(User user, String product, Double price, String description) {
+	super();
+	this.user = user;
+	this.product = product;
+	this.price = price;
+	this.description = description;
+    }
+
     public Marketplace(Integer id) {
 	super();
 	this.id = id;
 	this.comments = new ArrayList<>();
     }
-    
+
     public Marketplace(Integer id, User user, String product, Double price, String description,
 	    List<Comment> commentMarketplace) {
 	super();
@@ -71,7 +79,6 @@ public class Marketplace {
 	this.price = price;
 	this.description = description;
     }
-
 
     public User getUser() {
 	return user;
@@ -112,7 +119,12 @@ public class Marketplace {
     public List<Comment> getComments() {
 	return comments;
     }
-
+    
+ 
+    public void setComment(List<Comment> comment) {
+	this.comments = comment;
+    }
+    
     public void addComment(Integer id, User user, String text) {
 	comments.add(new Comment(id, user, text));
     }

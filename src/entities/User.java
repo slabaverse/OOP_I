@@ -47,6 +47,20 @@ public class User extends Comment {
 	this.game = new ArrayList<>();
     }
     
+    public User(Integer id, String username, String name, String birthdate, String relationship) {
+	super();
+	this.id = id;
+	this.username = username;
+	this.name = name;
+	this.birthdate = birthdate;
+	this.relationship = relationship;
+	this.marketplace = new ArrayList<>();
+	this.posts = new ArrayList<>();
+	this.followers = new ArrayList<>();
+	this.dev = new ArrayList<>();
+	this.game = new ArrayList<>();
+    }
+    
     public User(String username, String password, String name, String birthdate, String relationship) {
 	super();
 	this.username = username;

@@ -9,6 +9,12 @@ public class GameEvents extends Events {
 	super(user, eventId, eventName, eventDate, eventLocal, eventDescription);
 	this.gameName = gameName;
     }
+    
+    public GameEvents(User user, String eventName, String eventDate, String eventLocal, String eventDescription,
+	    String gameName) {
+	super(user, eventName, eventDate, eventLocal, eventDescription);
+	this.gameName = gameName;
+    }
 
     public GameEvents(User user, Integer eventId, String eventName, String eventDescription, String gameName) {
 	super(user, eventId, eventName, eventDescription);

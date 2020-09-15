@@ -6,6 +6,11 @@ public class DevEvents extends Events {
 	    String eventDescription) {
 	super(user, eventId, eventName, eventDate, eventLocal, eventDescription);
     }
+    
+    public DevEvents(User user, String eventName, String eventDate, String eventLocal,
+	    String eventDescription) {
+	super(user, eventName, eventDate, eventLocal, eventDescription);
+    }
 
     public DevEvents(User user, Integer eventId, String eventName, String eventDescription) {
 	super(user, eventId, eventName, eventDescription);
@@ -16,6 +21,7 @@ public class DevEvents extends Events {
 	super(user, id, eventName, eventDate, eventLocal, eventDescription);
     }
 
+  
     @Override
     public void addComment(Integer id, User user, String text) {
 	comments.add(new Comment(id, user, text));
