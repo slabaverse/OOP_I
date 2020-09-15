@@ -120,6 +120,7 @@ public class Main {
 		System.out.println("{4} FRIENDS");
 		System.out.println("{5} EVENTS");
 		System.out.println("{6} LOGOUT");
+		System.out.println(loggedUser.getId());
 		System.out.print(":~$ ");
 		choose = sc.nextInt();
 		System.out.println();
@@ -127,20 +128,19 @@ public class Main {
 		    System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		    System.out.println("{SET USER INFORMATIONS}");
 		    System.out.println();
+		    sc.nextLine();
 		    System.out.print("USERNAME:~$ ");
-		    String username = sc.nextLine();
+		    loggedUser.setUsername(sc.nextLine());
 		    System.out.print("PASSWORD:~$ ");
-		    String password = sc.nextLine();
+		    loggedUser.setPassword(sc.nextLine());
 		    System.out.print("FULL NAME:~$ ");
-		    String name = sc.nextLine();
+		    loggedUser.setName(sc.nextLine());
 		    System.out.print("BIRTHDATE (dd/MM/yyyy):~$ ");
-		    String birthdate = sc.nextLine();
+		    loggedUser.setBirthdate(sc.nextLine());
 		    System.out.print("RELATIONSHIP:~$ ");
-		    String relationship = sc.nextLine();
+		    loggedUser.setRelationship(sc.nextLine());
 		    System.out.println();
-		    User updateUser = new User(username, password, name, birthdate, relationship);
-		    userDAO.update(updateUser);
-		    break;
+		    userDAO.update(loggedUser);
 		}
 		if (choose == 2) {
 		    System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
@@ -254,17 +254,16 @@ public class Main {
 				System.out.print("SELECT THE POST NUMBER:~$ ");
 				Integer idPostEdit = sc.nextInt();
 				idPostEdit--;
-				allPost.get(idPostEdit); // Pegando o post
+				allPost.get(idPostEdit);
 				System.out.print("SELECT THE NUMBER OF THE COMMENT:~$ ");
 				Integer idCommentEdit = sc.nextInt();
 				idCommentEdit--;
-				Comment comment = allPost.get(idPostEdit).getComments().get(idCommentEdit); // Pegando o
-													    // comentário
+				Comment comment = allPost.get(idPostEdit).getComments().get(idCommentEdit);
 				sc.nextLine();
 				System.out.print("NEW COMMENT TEXT:~$ ");
-				comment.setText(sc.nextLine()); // Atualizando o valor do atributo TEXT
+				comment.setText(sc.nextLine());
 
-				commentDAO.update(comment); // Atualizando o campo TEXT no BD
+				commentDAO.update(comment);
 
 				break;
 			    case 3:
@@ -274,15 +273,12 @@ public class Main {
 				System.out.print("SELECT THE ID OF THE POST:~$ ");
 				Integer idPostDelete = sc.nextInt();
 				idPostDelete--;
-				allPost.get(idPostDelete); // Pegando o post
+				allPost.get(idPostDelete);
 				System.out.print("SELECT THE ID OF THE COMMENT:~$ ");
 				Integer idCommentDelete = sc.nextInt();
 				idCommentDelete--;
-				Comment commentDelete = allPost.get(idCommentDelete).getComments().get(idCommentDelete); // Pegando
-				// o
-				// comentário
-
-				commentDAO.remove(commentDelete); // Deletando comentário
+				Comment commentDelete = allPost.get(idCommentDelete).getComments().get(idCommentDelete);
+				commentDAO.remove(commentDelete);
 
 				break;
 			    }

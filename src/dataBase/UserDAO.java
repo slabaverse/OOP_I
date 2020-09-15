@@ -18,9 +18,13 @@ public class UserDAO implements InterfaceDAO<User> {
     public void add(User user) {
 	try {
 	    String sql = "INSERT INTO User (username, password, name, birthdate, relationship) VALUES ('"
-		    + user.getUsername() + "'," + user.getPassword() + ",'" + user.getName() + ",'"
-		    + user.getBirthdate() + ",'" + user.getRelationship() + "')";
+		    + user.getUsername() + "','" 
+		    + user.getPassword() + "','" 
+		    + user.getName() + "','"
+		    + user.getBirthdate() + "','" 
+		    + user.getRelationship() + "')";
 	    UtilBD.updateDB(sql);
+	    
 
 	} catch (SQLException e) {
 	    System.err.println("{ COULDN'T ADD THIS USER }");
@@ -30,10 +34,13 @@ public class UserDAO implements InterfaceDAO<User> {
     @Override
     public void update(User user) {
 	try {
-	    String sql = "UPDATE User SET " + "username = '" + user.getUsername() + "', " + "password = '"
-		    + user.getPassword() + "', " + "name = " + user.getName() + "', " + "birthdate = "
-		    + user.getBirthdate() + "', " + "relationship = " + user.getRelationship() + " " + "WHERE id = "
-		    + user.getId() + ";";
+	    String sql = "UPDATE User SET " 
+		    + "username = '" + user.getUsername() + "', " 
+		    + "password = '" + user.getPassword() + "', " 
+		    + "name = '" + user.getName() + "', " 
+		    + "birthdate = '" + user.getBirthdate() + "', " 
+		    + "relationship = '" + user.getRelationship() + "' " 
+		    + "WHERE id = " + user.getId() + ";";
 	    UtilBD.updateDB(sql);
 	} catch (SQLException e) {
 	    System.err.println("{ COULDN'T SET USER }");
@@ -62,7 +69,7 @@ public class UserDAO implements InterfaceDAO<User> {
 		String password = resultSet.getString("password");
 		String name = resultSet.getString("name");
 		String birthdate = resultSet.getString("birthdate");
-		String relationship = resultSet.getString("relatioship");
+		String relationship = resultSet.getString("relationship");
 		retrn.add(new User(id, username, password, name, birthdate, relationship));
 	    }
 	    resultSet.getStatement().close();
