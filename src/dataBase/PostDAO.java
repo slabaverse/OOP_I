@@ -7,15 +7,21 @@ import java.util.List;
 
 import entities.Comment;
 import entities.Post;
+import entities.User;
 
 public class PostDAO implements InterfaceDAO<Post> {
 
     @Override
     public void add(Post post) {
 	try {
-	    String sql = "INSERT INTO Post (username, content) VALUES ('" + post.getUser().getUsername() + "',"
+	    String sql = "INSERT INTO Post (username, content) VALUES ('" + post.getUser().getUsername() + "','"
 		    + post.getContent() + "')";
 	    UtilBD.updateDB(sql);
+	    
+	    sql = "INSERT INTO UserPost (user_fk, post_fk) VALUES (" + post.getUser().getId() + ","
+		    + getLastId() + ");";
+	    UtilBD.updateDB(sql);
+	    
 
 	} catch (SQLException e) {
 	    System.err.println("{ COULDN'T ADD THIS POST }");
@@ -25,7 +31,7 @@ public class PostDAO implements InterfaceDAO<Post> {
     @Override
     public void update(Post post) {
 	try {
-	    String sql = "UPDATE Post SET " + "content = '" + post.getContent() +  " "
+	    String sql = "UPDATE Post SET content = '" + post.getContent() +  "'"
 		    + "WHERE id = " + post.getIdPost() + ";";
 	    UtilBD.updateDB(sql);
 	} catch (SQLException e) {
@@ -38,6 +44,10 @@ public class PostDAO implements InterfaceDAO<Post> {
 	try {
 	    String sql = "DELETE FROM Post WHERE id = '" + post.getIdPost() + "'";
 	    UtilBD.updateDB(sql);
+	    
+	    sql = "DELETE FROM UserPost WHERE post_fk = '" + post.getIdPost() + "'";
+	    UtilBD.updateDB(sql);
+	    
 	} catch (SQLException e) {
 	    System.err.println("{ COULDN'T REMOVE THIS POST }");
 	}
@@ -89,11 +99,11 @@ public class PostDAO implements InterfaceDAO<Post> {
 	    String sql = "SELECT comment_fk FROM CommentPost WHERE post_fk = " + post.getIdPost() + ";";
 	    ResultSet resultSet = UtilBD.consultDB(sql);
 	    while (resultSet.next()) {
-		sql = "SELECT username, content FROM Comment WHERE id = " + resultSet.getInt("comment_fk") + ";";
+		sql = "SELECT username, text FROM Comments WHERE id = " + resultSet.getInt("comment_fk") + ";";
 		ResultSet commentSet = UtilBD.consultDB(sql);
 		String username = commentSet.getString("username");
-		String content = commentSet.getString("content");
-		comments.add(new Comment(username, content));
+		String text = commentSet.getString("text");
+		comments.add(new Comment(new User(username), text));
 		commentSet.getStatement().close();
 	    }
 	    resultSet.getStatement().close();
@@ -112,10 +122,27 @@ public class PostDAO implements InterfaceDAO<Post> {
 		String sql = "INSERT INTO CommentPost (comment_fk, post_fk) VALUES (" + id + ", "
 			+ post.getIdPost() + ");";
 		UtilBD.updateDB(sql);
+		
 	    }
 
 	} catch (SQLException e) {
 	    System.err.println("{ IMPOSSIBLE TO VIEW POSTS }");
 	}
+    }
+    public int getLastId() {
+	int id = 0;
+	try {
+	    String sql = "SELECT MAX(id) as id FROM Post;";
+	    ResultSet resultSet = UtilBD.consultDB(sql);
+	    while (resultSet.next()) {
+		id = resultSet.getInt("id");
+	    }
+
+	    resultSet.getStatement().close();
+	} catch (SQLException e) {
+	    System.err.println("{ UNABLE TO DO TI }");
+	}
+
+	return id;
     }
 }

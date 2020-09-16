@@ -111,7 +111,12 @@ public class Main {
 		System.out.println();
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		System.out.println();
-		System.out.println(userDAO.getPost(loggedUser));
+		System.out.println();
+		System.out.println("{ " + loggedUser.getUsername() + "'s POSTS }");
+		List<Post> showPosts = userDAO.getPost(loggedUser);
+		for (i = 0; i < showPosts.size(); i++) {
+		    System.out.println("# " + showPosts.get(i).getIdPost() + " - " + showPosts.get(i).getContent());
+		}
 		System.out.println();
 		System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 		System.out.println("{1} USER SETTINGS");
@@ -120,7 +125,6 @@ public class Main {
 		System.out.println("{4} FRIENDS");
 		System.out.println("{5} EVENTS");
 		System.out.println("{6} LOGOUT");
-		System.out.println(loggedUser.getId());
 		System.out.print(":~$ ");
 		choose = sc.nextInt();
 		System.out.println();
@@ -156,7 +160,8 @@ public class Main {
 		    System.out.println();
 		    switch (tempChoose) {
 		    case 1:
-			System.out.print("POST CONTENT:~$ ");
+			sc.nextLine();
+			System.out.print("WHATS ON YOUR MIND?:~$ ");
 			String content = sc.nextLine();
 			Post newPost = new Post(loggedUser, content);
 			postDAO.add(newPost);
@@ -167,8 +172,13 @@ public class Main {
 			} else {
 			    List<Post> postList = userDAO.getPost(loggedUser);
 			    for (i = 0; i < postList.size(); i++) {
-				System.out.println("Post number# " + (i + 1));
-				System.out.println("User: " + postList.get(i).getUser().getUsername());
+				System.out.println("#" + (i + 1) + " - " + postList.get(i).getContent());
+				System.out.println();						
+				for (int j = 0; j < postList.get(i).getComments().size(); j++) {
+				    System.out.println("# " + postList.get(i).getComments().get(j).getId()
+					    + postList.get(i).getComments().get(j).getUser().getUsername() + " said ");
+				    System.out.println(postList.get(i).getComments().get(j).getText());
+				}
 			    }
 			    do {
 				System.out.println();
@@ -185,7 +195,6 @@ public class Main {
 				    postNum--;
 				    System.out.println();
 				    sc.nextLine();
-
 				    System.out.print("WRITE A NEW CONTENT:~$ ");
 				    postList.get(postNum).setContent(sc.nextLine());
 				    postDAO.update(postList.get(postNum));
@@ -194,8 +203,10 @@ public class Main {
 				    sc.nextLine();
 				    System.out.print("SELECT THE POST NUMBER THAT YOU WANT TO REMOVE:~$ ");
 				    Integer postNumRemove = sc.nextInt();
+				    sc.nextLine();
 				    postNumRemove--;
 				    postDAO.remove(postList.get(postNumRemove));
+				    System.out.println("{ POST DELETED }");
 				    break;
 				case 3:
 				    break;
@@ -206,13 +217,12 @@ public class Main {
 		    case 3:
 			List<Post> allPost = postDAO.all();
 			for (i = 0; i < allPost.size(); i++) {
-			    System.out.println("Post Number: " + (i + 1));
-			    System.out.println("Username: " + allPost.get(i).getUser().getUsername());
-			    System.out.println("Content: " + allPost.get(i).getContent());
+			    System.out.println("# " + (i + 1) + " by " + allPost.get(i).getUser().getUsername());
+			    System.out.println("~: " + allPost.get(i).getContent());
 			    for (int j = 0; j < allPost.get(i).getComments().size(); j++) {
 				System.out.println(
-					"Username: " + allPost.get(i).getComments().get(j).getUser().getUsername());
-				System.out.println("Content: " + allPost.get(i).getComments().get(j).getText());
+					"User  " + allPost.get(i).getComments().get(j).getUser().getUsername());
+				System.out.println("Said: " + allPost.get(i).getComments().get(j).getText());
 			    }
 			}
 			do {
@@ -233,13 +243,15 @@ public class Main {
 				    System.out.print("SELECT POST NUMBER THAT YOU WANT TO COMMENT:~$ ");
 				    Integer idPostComment = sc.nextInt();
 				    idPostComment--;
+				    sc.nextLine();
 				    System.out.print("COMMENT TEXT:~$ ");
 				    String textComment = sc.nextLine();
 
 				    Post commentPost = allPost.get(idPostComment);
 				    List<Comment> commentList = new ArrayList<Comment>();
-				    commentList.add(new Comment(commentPost.getUser().getUsername(), textComment));
+				    commentList.add(new Comment(loggedUser, textComment));
 				    commentPost.setComment(commentList);
+				    postDAO.addComment(commentPost);
 
 				    System.out.println(
 					    "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");

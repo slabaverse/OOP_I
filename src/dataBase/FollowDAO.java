@@ -31,6 +31,7 @@ public class FollowDAO implements InterfaceDAO<Follow> {
 	try {
 	    String sql = "DELETE FROM Follow WHERE followed_fk = " + follow.getFollow().getId() + " AND follower_fk = " + follow.getFollower().getId() + ";";
 	    UtilBD.updateDB(sql);
+	    
 	} catch (SQLException e) {
 	    System.err.println("{ COULDN'T REMOVE FRIEND }");
 	}
@@ -51,5 +52,22 @@ public class FollowDAO implements InterfaceDAO<Follow> {
 	    System.err.println("{ COULDN'T LIST FRIENDS }");
 	}
 	return retrn;
+    }
+    
+    public int getLastId() {
+	int id = 0;
+	try {
+	    String sql = "SELECT MAX(id) as id FROM Follow;";
+	    ResultSet resultSet = UtilBD.consultDB(sql);
+	    while (resultSet.next()) {
+		id = resultSet.getInt("id");
+	    }
+
+	    resultSet.getStatement().close();
+	} catch (SQLException e) {
+	    System.err.println("{ UNABLE TO DO TI }");
+	}
+
+	return id;
     }
 }

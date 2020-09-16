@@ -86,10 +86,10 @@ public class User extends Comment {
 	this.game = new ArrayList<>();
     }
     
-    public User(String name) {
-	this.name = name;
+    public User(String username) {
+	this.username = username;
     }
-
+    
     public User(Integer id, String username) {
 	super();
 	this.id = id;

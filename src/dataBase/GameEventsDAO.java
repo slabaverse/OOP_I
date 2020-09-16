@@ -18,6 +18,10 @@ public class GameEventsDAO implements InterfaceDAO<GameEvents> {
 		    + gameEvents.getEventDate() + "'," + gameEvents.getEventLocal() + "',"
 		    + gameEvents.getEventDescription() + "'," + gameEvents.getGameName() + "')";
 	    UtilBD.updateDB(sql);
+	    
+	    sql = "INSERT INTO UserGameEvents (user_fk, gameevents_fk) VALUES (" + gameEvents.getUser().getId() + ","
+		    + getLastId() + ");";
+	    UtilBD.updateDB(sql);
 
 	} catch (SQLException e) {
 	    System.err.println("{ COULDN'T ADD THIS GAME EVENT }");
@@ -42,6 +46,9 @@ public class GameEventsDAO implements InterfaceDAO<GameEvents> {
     public void remove(GameEvents gameEvents) {
 	try {
 	    String sql = "DELETE FROM GameEvents WHERE id = '" + gameEvents.getEventId() + "'";
+	    UtilBD.updateDB(sql);
+	    
+	    sql = "DELETE FROM UserGameEvents WHERE gameevents_fk = '" + gameEvents.getEventId() + "'";
 	    UtilBD.updateDB(sql);
 	} catch (SQLException e) {
 	    System.err.println("{ COULDN'T REMOVE THIS GAME EVENT }");
@@ -131,5 +138,22 @@ public class GameEventsDAO implements InterfaceDAO<GameEvents> {
 	} catch (SQLException e) {
 	    System.err.println("{ IMPOSSIBLE TO VIEW GAME EVENTS }");
 	}
+    }
+
+    public int getLastId() {
+	int id = 0;
+	try {
+	    String sql = "SELECT MAX(id) as id FROM GameEvents;";
+	    ResultSet resultSet = UtilBD.consultDB(sql);
+	    while (resultSet.next()) {
+		id = resultSet.getInt("id");
+	    }
+
+	    resultSet.getStatement().close();
+	} catch (SQLException e) {
+	    System.err.println("{ UNABLE TO DO TI }");
+	}
+
+	return id;
     }
 }

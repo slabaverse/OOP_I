@@ -27,6 +27,12 @@ public class Comment {
 	super();
 	this.id = id;
     }
+    
+    public Comment(User user, String text) {
+	super();
+	this.user = user;
+	this.text = text;
+    }
 
     public Comment(String username, String text) {
 	super();

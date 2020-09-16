@@ -29,6 +29,8 @@ public interface InterfaceDAO<T> {
 	public void update(T reference);
 
 	public List<T> all();
+	
+	public int getLastId();
 
 
 	/*

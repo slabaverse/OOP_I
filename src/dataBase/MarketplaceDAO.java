@@ -17,6 +17,10 @@ public class MarketplaceDAO implements InterfaceDAO<Marketplace> {
 		    + marketplace.getUser().getUsername() + "'," + marketplace.getProduct() + ",'"
 		    + marketplace.getPrice() + ",'" + marketplace.getDescription() + "')";
 	    UtilBD.updateDB(sql);
+	    
+	    sql = "INSERT INTO UserMarketplace (user_fk, mkt_fk) VALUES (" + marketplace.getUser().getId() + ","
+		    + getLastId() + ");";
+	    UtilBD.updateDB(sql);
 
 	} catch (SQLException e) {
 	    System.err.println("{ COULDN'T ADD THIS PRODUCT }");
@@ -39,6 +43,9 @@ public class MarketplaceDAO implements InterfaceDAO<Marketplace> {
     public void remove(Marketplace marketplace) {
 	try {
 	    String sql = "DELETE FROM Marketplace WHERE id = '" + marketplace.getId() + "'";
+	    UtilBD.updateDB(sql);
+	    
+	    sql = "DELETE FROM UserMarketplace WHERE mkt_fk = '" + marketplace.getId() + "'";
 	    UtilBD.updateDB(sql);
 	} catch (SQLException e) {
 	    System.err.println("{ COULDN'T REMOVE THIS PRODUCT }");
@@ -120,5 +127,22 @@ public class MarketplaceDAO implements InterfaceDAO<Marketplace> {
 	} catch (SQLException e) {
 	    System.err.println("{ IMPOSSIBLE TO VIEW PRODUCTS }");
 	}
+    }
+
+    public int getLastId() {
+	int id = 0;
+	try {
+	    String sql = "SELECT MAX(id) as id FROM MArketplace;";
+	    ResultSet resultSet = UtilBD.consultDB(sql);
+	    while (resultSet.next()) {
+		id = resultSet.getInt("id");
+	    }
+
+	    resultSet.getStatement().close();
+	} catch (SQLException e) {
+	    System.err.println("{ UNABLE TO DO TI }");
+	}
+
+	return id;
     }
 }

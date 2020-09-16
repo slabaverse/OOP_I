@@ -6,15 +6,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entities.Comment;
-import entities.Post;
 
 public class CommentDAO implements InterfaceDAO<Comment> {
 
     @Override
     public void add(Comment comment) {
 	try {
-	    String sql = "INSERT INTO Comments (username, text) VALUES ('" + comment.getUser().getUsername() + "',"
+	    String sql = "INSERT INTO Comments (username, text) VALUES ('" + comment.getUser().getUsername() + "', '"
 		    + comment.getText() + "')";
+	    UtilBD.updateDB(sql);
+
+	    sql = "INSERT INTO UserComment (user_fk, comment_fk) VALUES (" + comment.getUser().getId() + ","
+		    + getLastId() + ");";
 	    UtilBD.updateDB(sql);
 
 	} catch (SQLException e) {
@@ -25,8 +28,7 @@ public class CommentDAO implements InterfaceDAO<Comment> {
     @Override
     public void update(Comment comment) {
 	try {
-	    String sql = "UPDATE Comment SET " + "text = '" + comment.getText() + " " + "WHERE id = " + comment.getId()
-		    + ";";
+	    String sql = "UPDATE Comment SET text = '" + comment.getText() + "' WHERE id = " + comment.getId() + ";";
 	    UtilBD.updateDB(sql);
 	} catch (SQLException e) {
 	    System.err.println("{ COULDN'T SET COMMENT }");
@@ -37,6 +39,9 @@ public class CommentDAO implements InterfaceDAO<Comment> {
     public void remove(Comment comment) {
 	try {
 	    String sql = "DELETE FROM Comment WHERE id = '" + comment.getId() + "'";
+	    UtilBD.updateDB(sql);
+
+	    sql = "DELETE FROM UserComment WHERE comment_fk = '" + comment.getId() + "'";
 	    UtilBD.updateDB(sql);
 	} catch (SQLException e) {
 	    System.err.println("{ COULDN'T REMOVE THIS COMMENT }");
@@ -61,7 +66,7 @@ public class CommentDAO implements InterfaceDAO<Comment> {
 	}
 	return retrn;
     }
-    
+
     public Comment get(Integer id) {
 	Comment retrn = null;
 	try {
@@ -91,7 +96,7 @@ public class CommentDAO implements InterfaceDAO<Comment> {
 
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
-	    System.err.println("Inable to do it");
+	    System.err.println("{ UNABLE TO DO TI }");
 	}
 
 	return id;

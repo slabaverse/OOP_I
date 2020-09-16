@@ -19,6 +19,10 @@ public class DevEventsDAO implements InterfaceDAO<DevEvents> {
 		    + devEvents.getEventDescription() + "')";
 	    UtilBD.updateDB(sql);
 
+	    sql = "INSERT INTO UserDevEvents (user_fk, devevents_fk) VALUES (" + devEvents.getUser().getId() + ","
+		    + getLastId() + ");";
+	    UtilBD.updateDB(sql);
+
 	} catch (SQLException e) {
 	    System.err.println("{ COULDN'T ADD THIS DEV EVENT }");
 	}
@@ -41,6 +45,9 @@ public class DevEventsDAO implements InterfaceDAO<DevEvents> {
     public void remove(DevEvents devEvents) {
 	try {
 	    String sql = "DELETE FROM DevEvents WHERE id = '" + devEvents.getEventId() + "'";
+	    UtilBD.updateDB(sql);
+
+	    sql = "DELETE FROM UserDevEvents WHERE devevents_fk = '" + devEvents.getEventId() + "'";
 	    UtilBD.updateDB(sql);
 	} catch (SQLException e) {
 	    System.err.println("{ COULDN'T REMOVE THIS DEV EVENT }");
@@ -92,12 +99,11 @@ public class DevEventsDAO implements InterfaceDAO<DevEvents> {
 	}
 	return retrn;
     }
-    
+
     public List<Comment> getComments(DevEvents devevents) {
 	List<Comment> comments = new ArrayList<Comment>();
 	try {
-	    String sql = "SELECT comment_fk FROM CommentDevEvents WHERE devevents_fk = " + devevents.getEventId()
-		    + ";";
+	    String sql = "SELECT comment_fk FROM CommentDevEvents WHERE devevents_fk = " + devevents.getEventId() + ";";
 	    ResultSet resultSet = UtilBD.consultDB(sql);
 	    while (resultSet.next()) {
 		sql = "SELECT username, text FROM Comment WHERE id = " + resultSet.getInt("comment_fk") + ";";
@@ -128,5 +134,22 @@ public class DevEventsDAO implements InterfaceDAO<DevEvents> {
 	} catch (SQLException e) {
 	    System.err.println("{ IMPOSSIBLE TO VIEW DEV EVENTS }");
 	}
+    }
+
+    public int getLastId() {
+	int id = 0;
+	try {
+	    String sql = "SELECT MAX(id) as id FROM DevEvents;";
+	    ResultSet resultSet = UtilBD.consultDB(sql);
+	    while (resultSet.next()) {
+		id = resultSet.getInt("id");
+	    }
+
+	    resultSet.getStatement().close();
+	} catch (SQLException e) {
+	    System.err.println("{ UNABLE TO DO TI }");
+	}
+
+	return id;
     }
 }
