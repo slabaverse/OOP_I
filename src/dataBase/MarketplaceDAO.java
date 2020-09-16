@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import entities.Comment;
 import entities.Marketplace;
 
 public class MarketplaceDAO implements InterfaceDAO<Marketplace> {
@@ -14,10 +13,10 @@ public class MarketplaceDAO implements InterfaceDAO<Marketplace> {
     public void add(Marketplace marketplace) {
 	try {
 	    String sql = "INSERT INTO Marketplace (username, product, price, description) VALUES ('"
-		    + marketplace.getUser().getUsername() + "'," + marketplace.getProduct() + ",'"
+		    + marketplace.getUser().getUsername() + "','" + marketplace.getProduct() + "', "
 		    + marketplace.getPrice() + ",'" + marketplace.getDescription() + "')";
 	    UtilBD.updateDB(sql);
-	    
+
 	    sql = "INSERT INTO UserMarketplace (user_fk, mkt_fk) VALUES (" + marketplace.getUser().getId() + ","
 		    + getLastId() + ");";
 	    UtilBD.updateDB(sql);
@@ -30,8 +29,8 @@ public class MarketplaceDAO implements InterfaceDAO<Marketplace> {
     @Override
     public void update(Marketplace marketplace) {
 	try {
-	    String sql = "UPDATE Marketplace SET " + "product = '" + marketplace.getProduct() + "', " + "price = '"
-		    + marketplace.getPrice() + "', " + "description = " + marketplace.getDescription() + " "
+	    String sql = "UPDATE Marketplace SET product = '" + marketplace.getProduct() + "', " + "price = "
+		    + marketplace.getPrice() + ", " + "description = '" + marketplace.getDescription() + "' "
 		    + "WHERE id = " + marketplace.getId() + ";";
 	    UtilBD.updateDB(sql);
 	} catch (SQLException e) {
@@ -44,7 +43,7 @@ public class MarketplaceDAO implements InterfaceDAO<Marketplace> {
 	try {
 	    String sql = "DELETE FROM Marketplace WHERE id = '" + marketplace.getId() + "'";
 	    UtilBD.updateDB(sql);
-	    
+
 	    sql = "DELETE FROM UserMarketplace WHERE mkt_fk = '" + marketplace.getId() + "'";
 	    UtilBD.updateDB(sql);
 	} catch (SQLException e) {
@@ -93,46 +92,10 @@ public class MarketplaceDAO implements InterfaceDAO<Marketplace> {
 	return retrn;
     }
 
-    public List<Comment> getComments(Marketplace mkt) {
-	List<Comment> comments = new ArrayList<Comment>();
-	try {
-	    String sql = "SELECT comment_fk FROM CommentMarketplace WHERE mkt_fk = " + mkt.getId() + ";";
-	    ResultSet resultSet = UtilBD.consultDB(sql);
-	    while (resultSet.next()) {
-		sql = "SELECT username, text FROM Comment WHERE id = " + resultSet.getInt("comment_fk") + ";";
-		ResultSet commentSet = UtilBD.consultDB(sql);
-		String username = commentSet.getString("username");
-		String text = commentSet.getString("text");
-		comments.add(new Comment(username, text));
-		commentSet.getStatement().close();
-	    }
-	    resultSet.getStatement().close();
-	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T SHOW COMMENTS }");
-	}
-	return comments;
-    }
-
-    public void addComment(Marketplace marketplace) {
-	try {
-	    CommentDAO comment = new CommentDAO();
-	    for (int i = 0; i < marketplace.getComments().size(); i++) {
-		comment.add(marketplace.getComments().get(i));
-		int id = comment.getLastId();
-		String sql = "INSERT INTO CommentMarketplace (comment_fk, mkt_fk) VALUES (" + id + ", "
-			+ marketplace.getId() + ");";
-		UtilBD.updateDB(sql);
-	    }
-
-	} catch (SQLException e) {
-	    System.err.println("{ IMPOSSIBLE TO VIEW PRODUCTS }");
-	}
-    }
-
     public int getLastId() {
 	int id = 0;
 	try {
-	    String sql = "SELECT MAX(id) as id FROM MArketplace;";
+	    String sql = "SELECT MAX(id) as id FROM Marketplace;";
 	    ResultSet resultSet = UtilBD.consultDB(sql);
 	    while (resultSet.next()) {
 		id = resultSet.getInt("id");

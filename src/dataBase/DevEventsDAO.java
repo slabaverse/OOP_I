@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import entities.Comment;
 import entities.DevEvents;
 
 public class DevEventsDAO implements InterfaceDAO<DevEvents> {
@@ -14,8 +13,10 @@ public class DevEventsDAO implements InterfaceDAO<DevEvents> {
     public void add(DevEvents devEvents) {
 	try {
 	    String sql = "INSERT INTO DevEvents (username, eventName, eventDate, eventLocal, eventDescription) VALUES ('"
-		    + devEvents.getUser().getUsername() + "'," + devEvents.getEventName() + "',"
-		    + devEvents.getEventDate() + "'," + devEvents.getEventLocal() + "',"
+		    + devEvents.getUser().getUsername() + "', '" 
+		    + devEvents.getEventName() + "', '"
+		    + devEvents.getEventDate() + "', '" 
+		    + devEvents.getEventLocal() + "', '"
 		    + devEvents.getEventDescription() + "')";
 	    UtilBD.updateDB(sql);
 
@@ -31,9 +32,9 @@ public class DevEventsDAO implements InterfaceDAO<DevEvents> {
     @Override
     public void update(DevEvents devEvents) {
 	try {
-	    String sql = "UPDATE DevEvents SET " + "eventName = '" + devEvents.getEventName() + "', " + "eventDate = '"
+	    String sql = "UPDATE DevEvents SET eventName = '" + devEvents.getEventName() + "', " + "eventDate = '"
 		    + devEvents.getEventDate() + "', " + "eventLocal = '" + devEvents.getEventLocal() + "', "
-		    + "eventDescription = '" + devEvents.getEventDescription() + " " + "WHERE id = "
+		    + "eventDescription = '" + devEvents.getEventDescription() + "' " + "WHERE id = "
 		    + devEvents.getEventId() + ";";
 	    UtilBD.updateDB(sql);
 	} catch (SQLException e) {
@@ -98,42 +99,6 @@ public class DevEventsDAO implements InterfaceDAO<DevEvents> {
 	    System.err.println("{ IMPOSSIBLE TO VIEW A DEV EVENT }");
 	}
 	return retrn;
-    }
-
-    public List<Comment> getComments(DevEvents devevents) {
-	List<Comment> comments = new ArrayList<Comment>();
-	try {
-	    String sql = "SELECT comment_fk FROM CommentDevEvents WHERE devevents_fk = " + devevents.getEventId() + ";";
-	    ResultSet resultSet = UtilBD.consultDB(sql);
-	    while (resultSet.next()) {
-		sql = "SELECT username, text FROM Comment WHERE id = " + resultSet.getInt("comment_fk") + ";";
-		ResultSet commentSet = UtilBD.consultDB(sql);
-		String username = commentSet.getString("username");
-		String text = commentSet.getString("text");
-		comments.add(new Comment(username, text));
-		commentSet.getStatement().close();
-	    }
-	    resultSet.getStatement().close();
-	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T SHOW COMMENTS }");
-	}
-	return comments;
-    }
-
-    public void addComment(DevEvents devevents) {
-	try {
-	    CommentDAO comment = new CommentDAO();
-	    for (int i = 0; i < devevents.getComments().size(); i++) {
-		comment.add(devevents.getComments().get(i));
-		int id = comment.getLastId();
-		String sql = "INSERT INTO CommentDevEvents (comment_fk, devevents_fk) VALUES (" + id + ", "
-			+ devevents.getEventId() + ");";
-		UtilBD.updateDB(sql);
-	    }
-
-	} catch (SQLException e) {
-	    System.err.println("{ IMPOSSIBLE TO VIEW DEV EVENTS }");
-	}
     }
 
     public int getLastId() {

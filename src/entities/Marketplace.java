@@ -2,8 +2,6 @@ package entities;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Marketplace {
 
@@ -12,8 +10,6 @@ public class Marketplace {
     private String product;
     private Double price;
     private String description;
-
-    private List<Comment> comments;
 
     LocalDateTime now = LocalDateTime.now();
 
@@ -34,7 +30,6 @@ public class Marketplace {
 	this.product = product;
 	this.price = price;
 	this.description = description;
-	this.comments = new ArrayList<>();
     }
 
     public Marketplace(Integer id, String product, Double price, String description) {
@@ -43,7 +38,6 @@ public class Marketplace {
 	this.product = product;
 	this.price = price;
 	this.description = description;
-	this.comments = new ArrayList<>();
     }
 
     public Marketplace(User user, String product, Double price, String description) {
@@ -57,24 +51,19 @@ public class Marketplace {
     public Marketplace(Integer id) {
 	super();
 	this.id = id;
-	this.comments = new ArrayList<>();
-    }
-
-    public Marketplace(Integer id, User user, String product, Double price, String description,
-	    List<Comment> commentMarketplace) {
-	super();
-	this.id = id;
-	this.user = user;
-	this.product = product;
-	this.price = price;
-	this.description = description;
-	this.comments = new ArrayList<>();
     }
 
     public Marketplace(Integer id, User user, String product, Double price, String description) {
 	super();
 	this.id = id;
 	this.user = user;
+	this.product = product;
+	this.price = price;
+	this.description = description;
+    }
+
+    public Marketplace(String product, Double price, String description) {
+	super();
 	this.product = product;
 	this.price = price;
 	this.description = description;
@@ -114,46 +103,5 @@ public class Marketplace {
 
     public void setDescription(String description) {
 	this.description = description;
-    }
-
-    public List<Comment> getComments() {
-	return comments;
-    }
-    
- 
-    public void setComment(List<Comment> comment) {
-	this.comments = comment;
-    }
-    
-    public void addComment(Integer id, User user, String text) {
-	comments.add(new Comment(id, user, text));
-    }
-
-    public void editComment(Integer id, String text) {
-	for (int i = 0; i < comments.size(); i++) {
-	    if (comments.get(i).getId() == id) {
-		comments.get(i).setText(text);
-	    }
-	}
-    }
-
-    public void removeComment(Integer id) {
-	for (int i = 0; i < comments.size(); i++) {
-	    if (comments.get(i).getId() == id) {
-		comments.remove(i);
-	    }
-	}
-	System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-	System.out.println("{COMMENT DELETED}");
-	System.out.println();
-    }
-
-    public void showComments() {
-	for (int i = 0; i < comments.size(); i++) {
-	    System.out.println("Comment #" + comments.get(i).getId() + " by " + comments.get(i).getUser().getName()
-		    + " on " + date + " at " + time);
-	    System.out.println(comments.get(i).getText());
-	    System.out.println();
-	}
     }
 }

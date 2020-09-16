@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import dataBase.CommentDAO;
 import dataBase.DevEventsDAO;
 import dataBase.FollowDAO;
 import dataBase.GameEventsDAO;
@@ -12,7 +11,6 @@ import dataBase.MarketplaceDAO;
 import dataBase.PostDAO;
 import dataBase.UserDAO;
 import dataBase.UtilBD;
-import entities.Comment;
 import entities.DevEvents;
 import entities.Follow;
 import entities.GameEvents;
@@ -30,7 +28,6 @@ public class Main {
 
 	List<User> users = new ArrayList<>();
 
-	CommentDAO commentDAO = new CommentDAO();
 	DevEventsDAO devEventsDAO = new DevEventsDAO();
 	FollowDAO followDAO = new FollowDAO();
 	GameEventsDAO gameEventsDAO = new GameEventsDAO();
@@ -40,7 +37,6 @@ public class Main {
 
 	int i = 0, choose = 0, tempChoose = 0;
 	User loggedUser = null;
-	char wannaComment = 'y';
 
 	Scanner sc = new Scanner(System.in);
 
@@ -173,12 +169,7 @@ public class Main {
 			    List<Post> postList = userDAO.getPost(loggedUser);
 			    for (i = 0; i < postList.size(); i++) {
 				System.out.println("#" + (i + 1) + " - " + postList.get(i).getContent());
-				System.out.println();						
-				for (int j = 0; j < postList.get(i).getComments().size(); j++) {
-				    System.out.println("# " + postList.get(i).getComments().get(j).getId()
-					    + postList.get(i).getComments().get(j).getUser().getUsername() + " said ");
-				    System.out.println(postList.get(i).getComments().get(j).getText());
-				}
+				System.out.println();
 			    }
 			    do {
 				System.out.println();
@@ -219,83 +210,7 @@ public class Main {
 			for (i = 0; i < allPost.size(); i++) {
 			    System.out.println("# " + (i + 1) + " by " + allPost.get(i).getUser().getUsername());
 			    System.out.println("~: " + allPost.get(i).getContent());
-			    for (int j = 0; j < allPost.get(i).getComments().size(); j++) {
-				System.out.println(
-					"User  " + allPost.get(i).getComments().get(j).getUser().getUsername());
-				System.out.println("Said: " + allPost.get(i).getComments().get(j).getText());
-			    }
 			}
-			do {
-			    System.out.println(
-				    "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-			    System.out.println("{1} TO MAKE A COMMENT");
-			    System.out.println("{2} TO EDIT A COMMENT");
-			    System.out.println("{3} TO DELETE A COMMENT");
-			    System.out.println("{4} MAIN MENU");
-			    System.out.print(":~$ ");
-			    tempChoose = sc.nextInt();
-			    switch (tempChoose) {
-			    case 1:
-				System.out.println(
-					"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-				while (wannaComment == 'Y' || wannaComment == 'y') {
-				    sc.nextLine();
-				    System.out.print("SELECT POST NUMBER THAT YOU WANT TO COMMENT:~$ ");
-				    Integer idPostComment = sc.nextInt();
-				    idPostComment--;
-				    sc.nextLine();
-				    System.out.print("COMMENT TEXT:~$ ");
-				    String textComment = sc.nextLine();
-
-				    Post commentPost = allPost.get(idPostComment);
-				    List<Comment> commentList = new ArrayList<Comment>();
-				    commentList.add(new Comment(loggedUser, textComment));
-				    commentPost.setComment(commentList);
-				    postDAO.addComment(commentPost);
-
-				    System.out.println(
-					    "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-				    System.out.print("ANOTHER COMMENT (Y/n):~$ ");
-				    System.out.println();
-				    wannaComment = sc.next().charAt(0);
-				}
-				break;
-			    case 2:
-				System.out.println(
-					"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-				System.out.print("SELECT THE POST NUMBER:~$ ");
-				Integer idPostEdit = sc.nextInt();
-				idPostEdit--;
-				allPost.get(idPostEdit);
-				System.out.print("SELECT THE NUMBER OF THE COMMENT:~$ ");
-				Integer idCommentEdit = sc.nextInt();
-				idCommentEdit--;
-				Comment comment = allPost.get(idPostEdit).getComments().get(idCommentEdit);
-				sc.nextLine();
-				System.out.print("NEW COMMENT TEXT:~$ ");
-				comment.setText(sc.nextLine());
-
-				commentDAO.update(comment);
-
-				break;
-			    case 3:
-				sc.nextLine();
-				System.out.println(
-					"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-				System.out.print("SELECT THE ID OF THE POST:~$ ");
-				Integer idPostDelete = sc.nextInt();
-				idPostDelete--;
-				allPost.get(idPostDelete);
-				System.out.print("SELECT THE ID OF THE COMMENT:~$ ");
-				Integer idCommentDelete = sc.nextInt();
-				idCommentDelete--;
-				Comment commentDelete = allPost.get(idCommentDelete).getComments().get(idCommentDelete);
-				commentDAO.remove(commentDelete);
-
-				break;
-			    }
-			} while (tempChoose != 4);
-			wannaComment = 'y';
 			break;
 		    case 4:
 			break;
@@ -316,6 +231,7 @@ public class Main {
 		    case 1:
 			System.out.println(
 				"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+			sc.nextLine();
 			System.out.print("PRODUCT:~$ ");
 			String product = sc.nextLine();
 			System.out.print("PRICE ($):~$ ");
@@ -328,12 +244,14 @@ public class Main {
 			break;
 		    case 2:
 			if (userDAO.getMarketplace(loggedUser).isEmpty()) {
-			    System.out.println("{YOU DON'T HAVE PRODUCTS YET}");
+			    System.out.println("{YOU DON'T HAVE ANY PRODUCTS YET}");
 			} else {
 			    List<Marketplace> mktList = userDAO.getMarketplace(loggedUser);
 			    for (i = 0; i < mktList.size(); i++) {
-				System.out.println("Product number# " + (i + 1));
-				System.out.println("User: " + mktList.get(i).getUser().getUsername());
+				System.out.println("#" + (i + 1) + " - " + mktList.get(i).getProduct() + " - R$ "
+					+ mktList.get(i).getPrice());
+				System.out.println(mktList.get(i).getDescription());
+				System.out.println();
 			    }
 			    do {
 				System.out.println();
@@ -346,24 +264,29 @@ public class Main {
 				    System.out.println(
 					    "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 				    System.out.print("SELECT A PRODUCT NUMBER THAT YOU WANT TO EDIT:~$ ");
-				    Integer mktNum = sc.nextInt();
-				    mktNum--;
+				    Integer mkttNum = sc.nextInt();
+				    mkttNum--;
 				    System.out.println();
 				    sc.nextLine();
-				    System.out.print("EDIT PRODUCT NAME:~$ ");
-				    mktList.get(mktNum).setProduct(sc.nextLine());
-				    System.out.print("EDIT PRODUCT PRICE:~$ ");
-				    mktList.get(mktNum).setPrice(sc.nextDouble());
-				    System.out.print("EDIT PRODUCT DESCRIPTION:~$ ");
-				    mktList.get(mktNum).setDescription(sc.nextLine());
-				    marketplaceDAO.update(mktList.get(mktNum));
+				    System.out.print("WRITE A NEW PRODUCT NAME:~$ ");
+				    mktList.get(mkttNum).setProduct(sc.nextLine());
+				    marketplaceDAO.update(mktList.get(mkttNum));
+				    System.out.print("WRITE A NEW PRODUCT PRICE:~$ ");
+				    mktList.get(mkttNum).setPrice(sc.nextDouble());
+				    marketplaceDAO.update(mktList.get(mkttNum));
+				    sc.nextLine();
+				    System.out.print("WRITE A NEW PRODUCT DESCRIPTION:~$ ");
+				    mktList.get(mkttNum).setDescription(sc.nextLine());
+				    marketplaceDAO.update(mktList.get(mkttNum));
 				    break;
 				case 2:
 				    sc.nextLine();
 				    System.out.print("SELECT A PRODUCT NUMBER THAT YOU WANT TO REMOVE:~$ ");
 				    Integer mktNumRemove = sc.nextInt();
+				    sc.nextLine();
 				    mktNumRemove--;
 				    marketplaceDAO.remove(mktList.get(mktNumRemove));
+				    System.out.println("{ PRODUCT DELETED }");
 				    break;
 				case 3:
 				    break;
@@ -374,81 +297,10 @@ public class Main {
 		    case 3:
 			List<Marketplace> allMkt = marketplaceDAO.all();
 			for (i = 0; i < allMkt.size(); i++) {
-			    System.out.println("Product Number: " + (i + 1));
-			    System.out.println("Username: " + allMkt.get(i).getUser().getUsername());
-			    System.out.println("Product: " + allMkt.get(i).getProduct());
-			    System.out.println("Price: " + allMkt.get(i).getPrice());
-			    System.out.println("Description: " + allMkt.get(i).getDescription());
-			    for (int j = 0; j < allMkt.get(i).getComments().size(); j++) {
-				System.out.println(
-					"Username: " + allMkt.get(i).getComments().get(j).getUser().getUsername());
-				System.out.println("Content: " + allMkt.get(i).getComments().get(j).getText());
-			    }
+			    System.out.println("# " + (i + 1) + " by " + allMkt.get(i).getUser().getUsername());
+			    System.out.println("~: " + allMkt.get(i).getProduct() + " R$ " + allMkt.get(i).getPrice());
+			    System.out.println(allMkt.get(i).getDescription());
 			}
-			do {
-			    System.out.println(
-				    "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-			    System.out.println("{1} TO MAKE A COMMENT");
-			    System.out.println("{2} TO EDIT A COMMENT");
-			    System.out.println("{3} TO DELETE A COMMENT");
-			    System.out.println("{4} MAIN MENU");
-			    System.out.print(":~$ ");
-			    tempChoose = sc.nextInt();
-			    switch (tempChoose) {
-			    case 1:
-				System.out.println(
-					"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-				while (wannaComment == 'Y' || wannaComment == 'y') {
-				    sc.nextLine();
-				    System.out.print("SELECT A PRODUCT NUMBER THAT YOU WANT TO COMMENT:~$ ");
-				    Integer idProductComment = sc.nextInt();
-				    idProductComment--;
-				    System.out.print("COMMENT TEXT:~$ ");
-				    String textComment = sc.nextLine();
-				    Marketplace commentMkt = allMkt.get(idProductComment);
-				    List<Comment> commentList = new ArrayList<Comment>();
-				    commentList.add(new Comment(commentMkt.getUser().getUsername(), textComment));
-				    commentMkt.setComment(commentList);
-				    System.out.println(
-					    "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-				    System.out.print("ANOTHER COMMENT (Y/n):~$ ");
-				    System.out.println();
-				    wannaComment = sc.next().charAt(0);
-				}
-				break;
-			    case 2:
-				System.out.println(
-					"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-				System.out.print("SELECT A PRODUCT NUMBER:~$ ");
-				Integer idProductEdit = sc.nextInt();
-				idProductEdit--;
-				allMkt.get(idProductEdit);
-				System.out.print("SELECT THE NUMBER OF THE COMMENT:~$ ");
-				Integer idCommentEdit = sc.nextInt();
-				idCommentEdit--;
-				Comment comment = allMkt.get(idProductEdit).getComments().get(idCommentEdit);
-				sc.nextLine();
-				System.out.print("NEW COMMENT TEXT:~$ ");
-				comment.setText(sc.nextLine());
-				commentDAO.update(comment);
-				break;
-			    case 3:
-				sc.nextLine();
-				System.out.println(
-					"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-				System.out.print("SELECT PRODUCT ID:~$ ");
-				Integer idPostDelete = sc.nextInt();
-				idPostDelete--;
-				allMkt.get(idPostDelete);
-				System.out.print("SELECT THE ID OF THE COMMENT:~$ ");
-				Integer idCommentDelete = sc.nextInt();
-				idCommentDelete--;
-				Comment commentDelete = allMkt.get(idCommentDelete).getComments().get(idCommentDelete);
-				commentDAO.remove(commentDelete);
-				break;
-			    }
-			} while (tempChoose != 4);
-			wannaComment = 'y';
 			break;
 		    case 4:
 			break;
@@ -460,8 +312,7 @@ public class Main {
 		    System.out.println();
 		    List<User> followedUsers = userDAO.getFollowed(loggedUser);
 		    for (i = 0; i < followedUsers.size(); i++) {
-			System.out.println("User number: " + (i + 1));
-			System.out.println("Username: " + followedUsers.get(i).getUsername());
+			System.out.println("#" + (i + 1) + " " + followedUsers.get(i).getUsername());
 		    }
 		    System.out.println();
 		    System.out.println("{1} LIST ALL PEOPLE");
@@ -477,8 +328,7 @@ public class Main {
 			    List<User> allUsers = userDAO.all();
 
 			    for (i = 0; i < allUsers.size(); i++) {
-				System.out.println("User number: " + (i + 1));
-				System.out.println("Name: " + allUsers.get(i).getName());
+				System.out.println("#: " + (i + 1) + " " + allUsers.get(i).getName());
 			    }
 			    System.out.println();
 			    System.out.println("{1} FOLLOW NEW FRIEND");
@@ -583,12 +433,14 @@ public class Main {
 			break;
 		    case 2:
 			if (userDAO.getDevEvents(loggedUser).isEmpty()) {
-			    System.out.println("{YOU DON'T HAVE DEV EVENTS YET}");
+			    System.out.println("{YOU DON'T HAVE ANY DEV EVENT YET}");
 			} else {
 			    List<DevEvents> devList = userDAO.getDevEvents(loggedUser);
 			    for (i = 0; i < devList.size(); i++) {
-				System.out.println("Event number# " + (i + 1));
-				System.out.println("User: " + devList.get(i).getUser().getUsername());
+				System.out.println("#" + (i + 1) + " { " + devList.get(i).getEventName() + " } " + " - "
+					+ devList.get(i).getEventDate() + " - " + devList.get(i).getEventLocal());
+				System.out.println(devList.get(i).getEventDescription());
+				System.out.println();
 			    }
 			    do {
 				System.out.println();
@@ -600,27 +452,32 @@ public class Main {
 				    sc.nextLine();
 				    System.out.println(
 					    "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-				    System.out.print("SELECT AN EVENT NUMBER THAT YOU WANT TO EDIT:~$ ");
+				    System.out.print("SELECT A DEV EVENT NUMBER THAT YOU WANT TO EDIT:~$ ");
 				    Integer devNum = sc.nextInt();
 				    devNum--;
 				    System.out.println();
 				    sc.nextLine();
-				    System.out.print("EDIT EVENT NAME:~$ ");
+				    System.out.print("WRITE A NEW DEV EVENT NAME:~$ ");
 				    devList.get(devNum).setEventName(sc.nextLine());
-				    System.out.print("EDIT EVENT DATE:~$ ");
+				    devEventsDAO.update(devList.get(devNum));
+				    System.out.print("WRITE A NEW DEV EVENT DATE:~$ ");
 				    devList.get(devNum).setEventDate(sc.nextLine());
-				    System.out.print("EDIT EVENT LOCAL:~$ ");
+				    devEventsDAO.update(devList.get(devNum));
+				    System.out.print("WRITE A NEW DEV EVENT LOCAL:~$ ");
 				    devList.get(devNum).setEventLocal(sc.nextLine());
-				    System.out.print("EDIT EVENT DESCRIPTION:~$ ");
+				    devEventsDAO.update(devList.get(devNum));
+				    System.out.print("WRITE A NEW DEV EVENT DESCRIPTION:~$ ");
 				    devList.get(devNum).setEventDescription(sc.nextLine());
 				    devEventsDAO.update(devList.get(devNum));
 				    break;
 				case 2:
 				    sc.nextLine();
-				    System.out.print("SELECT AN EVENT NUMBER THAT YOU WANT TO REMOVE:~$ ");
+				    System.out.print("SELECT A DEV EVENT NUMBER THAT YOU WANT TO REMOVE:~$ ");
 				    Integer devNumRemove = sc.nextInt();
+				    sc.nextLine();
 				    devNumRemove--;
 				    devEventsDAO.remove(devList.get(devNumRemove));
+				    System.out.println("{ EVENT DELETED }");
 				    break;
 				case 3:
 				    break;
@@ -630,12 +487,16 @@ public class Main {
 			break;
 		    case 3:
 			if (userDAO.getGameEvents(loggedUser).isEmpty()) {
-			    System.out.println("{YOU DON'T HAVE GAME EVENTS YET}");
+			    System.out.println("{YOU DON'T HAVE ANY GAME EVENT YET}");
 			} else {
 			    List<GameEvents> gameList = userDAO.getGameEvents(loggedUser);
 			    for (i = 0; i < gameList.size(); i++) {
-				System.out.println("Event number# " + (i + 1));
-				System.out.println("User: " + gameList.get(i).getUser().getUsername());
+				System.out.println("#" + (i + 1) + " { " + gameList.get(i).getEventName() + " } "
+					+ " - " + gameList.get(i).getEventDate() + " - "
+					+ gameList.get(i).getEventLocal());
+				System.out.println(gameList.get(i).getEventDescription());
+				System.out.println(" { MAIN GAME: " + gameList.get(i).getGameName() + " } ");
+				System.out.println();
 			    }
 			    do {
 				System.out.println();
@@ -647,29 +508,35 @@ public class Main {
 				    sc.nextLine();
 				    System.out.println(
 					    "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-				    System.out.print("SELECT AN EVENT NUMBER THAT YOU WANT TO EDIT:~$ ");
+				    System.out.print("SELECT A GAME EVENT NUMBER THAT YOU WANT TO EDIT:~$ ");
 				    Integer gameNum = sc.nextInt();
 				    gameNum--;
 				    System.out.println();
 				    sc.nextLine();
-				    System.out.print("EDIT EVENT NAME:~$ ");
+				    System.out.print("WRITE A NEW GAME EVENT NAME:~$ ");
 				    gameList.get(gameNum).setEventName(sc.nextLine());
-				    System.out.print("EDIT EVENT DATE:~$ ");
+				    gameEventsDAO.update(gameList.get(gameNum));
+				    System.out.print("WRITE A NEW GAME EVENT DATE:~$ ");
 				    gameList.get(gameNum).setEventDate(sc.nextLine());
-				    System.out.print("EDIT EVENT LOCAL:~$ ");
+				    gameEventsDAO.update(gameList.get(gameNum));
+				    System.out.print("WRITE A NEW GAME EVENT LOCAL:~$ ");
 				    gameList.get(gameNum).setEventLocal(sc.nextLine());
-				    System.out.print("EDIT EVENT DESCRIPTION:~$ ");
+				    gameEventsDAO.update(gameList.get(gameNum));
+				    System.out.print("WRITE A NEW GAME EVENT DESCRIPTION:~$ ");
 				    gameList.get(gameNum).setEventDescription(sc.nextLine());
-				    System.out.print("EDIT MAIN GAME NAME:~$ ");
+				    gameEventsDAO.update(gameList.get(gameNum));
+				    System.out.print("WRITE A NEW MAIN GAME NAME:~$ ");
 				    gameList.get(gameNum).setEventDescription(sc.nextLine());
 				    gameEventsDAO.update(gameList.get(gameNum));
 				    break;
 				case 2:
 				    sc.nextLine();
-				    System.out.print("SELECT AN EVENT NUMBER THAT YOU WANT TO REMOVE:~$ ");
+				    System.out.print("SELECT A GAME EVENT NUMBER THAT YOU WANT TO REMOVE:~$ ");
 				    Integer gameNumRemove = sc.nextInt();
+				    sc.nextLine();
 				    gameNumRemove--;
 				    gameEventsDAO.remove(gameList.get(gameNumRemove));
+				    System.out.println("{ EVENT DELETED }");
 				    break;
 				case 3:
 				    break;
@@ -693,169 +560,23 @@ public class Main {
 			    System.out.println("{DEV EVENTS}");
 			    List<DevEvents> allDevEvents = devEventsDAO.all();
 			    for (i = 0; i < allDevEvents.size(); i++) {
-				System.out.println("Event Number: " + (i + 1));
-				System.out.println("Creator: " + allDevEvents.get(i).getUser().getUsername());
-				System.out.println("Name: " + allDevEvents.get(i).getEventName());
-				System.out.println("Date: " + allDevEvents.get(i).getEventDate());
-				System.out.println("Local: " + allDevEvents.get(i).getEventLocal());
-				System.out.println("Description: " + allDevEvents.get(i).getEventDescription());
-				for (int j = 0; j < allDevEvents.get(i).getComments().size(); j++) {
-				    System.out.println("Username: "
-					    + allDevEvents.get(i).getComments().get(j).getUser().getUsername());
-				    System.out
-					    .println("Content: " + allDevEvents.get(i).getComments().get(j).getText());
-				}
+				System.out.println("# " + (i + 1) + " { " + allDevEvents.get(i).getEventName() + " } ");
+				System.out.println(allDevEvents.get(i).getEventDate() + " - "
+					+ allDevEvents.get(i).getEventLocal());
+				System.out.println("~: " + allDevEvents.get(i).getEventDescription());
 			    }
-			    do {
-				System.out.println(
-					"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-				System.out.println("{1} TO MAKE A COMMENT");
-				System.out.println("{2} TO EDIT A COMMENT");
-				System.out.println("{3} TO DELETE A COMMENT");
-				System.out.println("{4} MAIN MENU");
-				System.out.print(":~$ ");
-				tempChoose = sc.nextInt();
-				switch (tempChoose) {
-				case 1:
-				    System.out.println(
-					    "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-				    while (wannaComment == 'Y' || wannaComment == 'y') {
-					sc.nextLine();
-					System.out.print("SELECT AN EVENT NUMBER THAT YOU WANT TO COMMENT:~$ ");
-					Integer idDevEventComment = sc.nextInt();
-					idDevEventComment--;
-					System.out.print("COMMENT TEXT:~$ ");
-					String textComment = sc.nextLine();
-					DevEvents commentDev = allDevEvents.get(idDevEventComment);
-					List<Comment> commentList = new ArrayList<Comment>();
-					commentList.add(new Comment(commentDev.getUser().getUsername(), textComment));
-					commentDev.setComment(commentList);
-					System.out.println(
-						"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-					System.out.print("ANOTHER COMMENT (Y/n):~$ ");
-					System.out.println();
-					wannaComment = sc.next().charAt(0);
-				    }
-				    break;
-				case 2:
-				    System.out.println(
-					    "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-				    System.out.print("SELECT AN EVENT NUMBER:~$ ");
-				    Integer idDevEventEdit = sc.nextInt();
-				    idDevEventEdit--;
-				    allDevEvents.get(idDevEventEdit);
-				    System.out.print("SELECT THE NUMBER OF THE COMMENT:~$ ");
-				    Integer idCommentEdit = sc.nextInt();
-				    idCommentEdit--;
-				    Comment comment = allDevEvents.get(idDevEventEdit).getComments().get(idCommentEdit);
-				    sc.nextLine();
-				    System.out.print("NEW COMMENT TEXT:~$ ");
-				    comment.setText(sc.nextLine());
-				    commentDAO.update(comment);
-				    break;
-				case 3:
-				    sc.nextLine();
-				    System.out.println(
-					    "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-				    System.out.print("SELECT DEV EVENT ID:~$ ");
-				    Integer idDevEventDelete = sc.nextInt();
-				    idDevEventDelete--;
-				    allDevEvents.get(idDevEventDelete);
-				    System.out.print("SELECT THE ID OF THE COMMENT:~$ ");
-				    Integer idCommentDelete = sc.nextInt();
-				    idCommentDelete--;
-				    Comment commentDelete = allDevEvents.get(idCommentDelete).getComments()
-					    .get(idCommentDelete);
-				    commentDAO.remove(commentDelete);
-				    break;
-				}
-			    } while (tempChoose != 4);
-			    wannaComment = 'y';
 			    break;
 			case 2:
 			    System.out.println("{GAME EVENTS}");
 			    List<GameEvents> allGameEvents = gameEventsDAO.all();
 			    for (i = 0; i < allGameEvents.size(); i++) {
-				System.out.println("Event Number: " + (i + 1));
-				System.out.println("Creator: " + allGameEvents.get(i).getUser().getUsername());
-				System.out.println("Name: " + allGameEvents.get(i).getEventName());
-				System.out.println("Date: " + allGameEvents.get(i).getEventDate());
-				System.out.println("Local: " + allGameEvents.get(i).getEventLocal());
-				System.out.println("Description: " + allGameEvents.get(i).getEventDescription());
-				System.out.println("Main Game: " + allGameEvents.get(i).getGameName());
-				for (int j = 0; j < allGameEvents.get(i).getComments().size(); j++) {
-				    System.out.println("Username: "
-					    + allGameEvents.get(i).getComments().get(j).getUser().getUsername());
-				    System.out
-					    .println("Content: " + allGameEvents.get(i).getComments().get(j).getText());
-				}
+				System.out
+					.println("# " + (i + 1) + " { " + allGameEvents.get(i).getEventName() + " } ");
+				System.out.println(allGameEvents.get(i).getEventDate() + " - "
+					+ allGameEvents.get(i).getEventLocal());
+				System.out.println(" MAIN GAME{ " + allGameEvents.get(i).getGameName() + " } ");
+				System.out.println("~: " + allGameEvents.get(i).getEventDescription());
 			    }
-			    do {
-				System.out.println(
-					"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-				System.out.println("{1} TO MAKE A COMMENT");
-				System.out.println("{2} TO EDIT A COMMENT");
-				System.out.println("{3} TO DELETE A COMMENT");
-				System.out.println("{4} MAIN MENU");
-				System.out.print(":~$ ");
-				tempChoose = sc.nextInt();
-				switch (tempChoose) {
-				case 1:
-				    System.out.println(
-					    "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-				    while (wannaComment == 'Y' || wannaComment == 'y') {
-					sc.nextLine();
-					System.out.print("SELECT AN EVENT NUMBER THAT YOU WANT TO COMMENT:~$ ");
-					Integer idGameEventComment = sc.nextInt();
-					idGameEventComment--;
-					System.out.print("COMMENT TEXT:~$ ");
-					String textComment = sc.nextLine();
-					GameEvents commentGame = allGameEvents.get(idGameEventComment);
-					List<Comment> commentList = new ArrayList<Comment>();
-					commentList.add(new Comment(commentGame.getUser().getUsername(), textComment));
-					commentGame.setComment(commentList);
-					System.out.println(
-						"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-					System.out.print("ANOTHER COMMENT (Y/n):~$ ");
-					System.out.println();
-					wannaComment = sc.next().charAt(0);
-				    }
-				    break;
-				case 2:
-				    System.out.println(
-					    "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-				    System.out.print("SELECT AN EVENT NUMBER:~$ ");
-				    Integer idGameEventEdit = sc.nextInt();
-				    idGameEventEdit--;
-				    allGameEvents.get(idGameEventEdit);
-				    System.out.print("SELECT THE NUMBER OF THE COMMENT:~$ ");
-				    Integer idCommentEdit = sc.nextInt();
-				    idCommentEdit--;
-				    Comment comment = allGameEvents.get(idGameEventEdit).getComments()
-					    .get(idCommentEdit);
-				    sc.nextLine();
-				    System.out.print("NEW COMMENT TEXT:~$ ");
-				    comment.setText(sc.nextLine());
-				    commentDAO.update(comment);
-				    break;
-				case 3:
-				    sc.nextLine();
-				    System.out.println(
-					    "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-				    System.out.print("SELECT GAME EVENT ID:~$ ");
-				    Integer idGameEventDelete = sc.nextInt();
-				    idGameEventDelete--;
-				    allGameEvents.get(idGameEventDelete);
-				    System.out.print("SELECT THE ID OF THE COMMENT:~$ ");
-				    Integer idCommentDelete = sc.nextInt();
-				    idCommentDelete--;
-				    Comment commentDelete = allGameEvents.get(idGameEventDelete).getComments()
-					    .get(idCommentDelete);
-				    commentDAO.remove(commentDelete);
-				    break;
-				}
-			    } while (tempChoose != 4);
-			    wannaComment = 'y';
 			    break;
 			case 3:
 			    break;
@@ -866,11 +587,9 @@ public class Main {
 		}
 		if (choose == 6) {
 		    loggedUser = null;
-		    wannaComment = 'y';
 		    break;
 		}
 	    } while (true);
-	    sc.close();
 	}
     }
 }

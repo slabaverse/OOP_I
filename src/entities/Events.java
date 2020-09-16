@@ -2,8 +2,6 @@ package entities;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class Events {
 
@@ -13,8 +11,6 @@ public abstract class Events {
     private String eventDate;
     private String eventLocal;
     private String eventDescription;
-
-    protected List<Comment> comments;
 
     LocalDateTime now = LocalDateTime.now();
 
@@ -33,11 +29,9 @@ public abstract class Events {
 	this.eventDate = eventDate;
 	this.eventLocal = eventLocal;
 	this.eventDescription = eventDescription;
-	this.comments = new ArrayList<>();
     }
-    
-    public Events(User user, String eventName, String eventDate, String eventLocal,
-	    String eventDescription) {
+
+    public Events(User user, String eventName, String eventDate, String eventLocal, String eventDescription) {
 	super();
 	this.user = user;
 	this.eventName = eventName;
@@ -52,7 +46,6 @@ public abstract class Events {
 	this.eventId = eventId;
 	this.eventName = eventName;
 	this.eventDescription = eventDescription;
-	this.comments = new ArrayList<>();
     }
 
     public User getUser() {
@@ -98,22 +91,5 @@ public abstract class Events {
     public void setEventDescription(String eventDescription) {
 	this.eventDescription = eventDescription;
     }
-
-    public List<Comment> getComments() {
-	return comments;
-    }
-    
- 
-    public void setComment(List<Comment> comment) {
-	this.comments = comment;
-    }
-    
-    public abstract void addComment(Integer id, User user, String text);
-
-    public abstract void editComment(Integer id, String text);
-
-    public abstract void removeComment(Integer id);
-
-    public abstract void showComments();
 
 }

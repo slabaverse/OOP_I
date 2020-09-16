@@ -2,16 +2,12 @@ package entities;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Post {
 
     private Integer idPost;
     private User user;
     private String content;
-
-    private List<Comment> comments;
 
     LocalDateTime now = LocalDateTime.now();
 
@@ -30,13 +26,11 @@ public class Post {
 	this.user = user;
 	this.idPost = idPost;
 	this.content = content;
-	this.comments = new ArrayList<>();
     }
 
     public Post(Integer idPost) {
 	super();
 	this.idPost = idPost;
-	this.comments = new ArrayList<>();
     }
 
     public Post(Integer idPost, User user, String content) {
@@ -45,7 +39,7 @@ public class Post {
 	this.user = user;
 	this.content = content;
     }
-    
+
     public Post(Integer idPost, String content) {
 	super();
 	this.idPost = idPost;
@@ -81,45 +75,4 @@ public class Post {
     public void setContent(String content) {
 	this.content = content;
     }
-
-    public List<Comment> getComments() {
-	return comments;
-    }
-
-    public void setComment(List<Comment> comment) {
-	this.comments = comment;
-    }
-    
-    public void addComment(Integer id, User user, String text) {
-	comments.add(new Comment(id, user, text));
-    }
-
-    public void editComment(Integer id, String text) {
-	for (int i = 0; i < comments.size(); i++) {
-	    if (comments.get(i).getId() == id) {
-		comments.get(i).setText(text);
-	    }
-	}
-    }
-
-    public void removeComment(Integer id) {
-	for (int i = 0; i < comments.size(); i++) {
-	    if (comments.get(i).getId() == id) {
-		comments.remove(i);
-	    }
-	}
-	System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-	System.out.println("{COMMENT DELETED}");
-	System.out.println();
-    }
-
-    public void showComments() {
-	for (int i = 0; i < comments.size(); i++) {
-	    System.out.println("Comment #" + comments.get(i).getId() + " by " + comments.get(i).getUser().getName()
-		    + " on " + date + " at " + time);
-	    System.out.println("        " + comments.get(i).getText());
-	    System.out.println();
-	}
-    }
-
 }
