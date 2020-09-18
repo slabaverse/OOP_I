@@ -135,6 +135,8 @@ public class UtilBD {
 	stm.executeUpdate("CREATE TABLE Post (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT," + "username VARCHAR(50),"
 		+ "content VARCHAR(300) NOT NULL, "
 		+ "CONSTRAINT username_fk FOREIGN KEY (username) REFERENCES User (username) ON UPDATE CASCADE ON DELETE CASCADE);");
+	stm.executeUpdate("INSERT INTO Post (username, content) "
+		+ "VALUES('@adam','Primeiro post, Skynet bombando')");
 
     }
 

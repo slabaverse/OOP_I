@@ -13,12 +13,9 @@ public class GameEventsDAO implements InterfaceDAO<GameEvents> {
     public void add(GameEvents gameEvents) {
 	try {
 	    String sql = "INSERT INTO GameEvents (username, eventName, eventDate, eventLocal, eventDescription, gameName) VALUES ('"
-		    + gameEvents.getUser().getUsername() + "', '" 
-		    + gameEvents.getEventName() + "', '"
-		    + gameEvents.getEventDate() + "', '" 
-		    + gameEvents.getEventLocal() + "', '"
-		    + gameEvents.getEventDescription() + "', '" 
-		    + gameEvents.getGameName() + "')";
+		    + gameEvents.getUser().getUsername() + "', '" + gameEvents.getEventName() + "', '"
+		    + gameEvents.getEventDate() + "', '" + gameEvents.getEventLocal() + "', '"
+		    + gameEvents.getEventDescription() + "', '" + gameEvents.getGameName() + "')";
 	    UtilBD.updateDB(sql);
 
 	    sql = "INSERT INTO UserGameEvents (user_fk, gameevents_fk) VALUES (" + gameEvents.getUser().getId() + ","
@@ -101,6 +98,23 @@ public class GameEventsDAO implements InterfaceDAO<GameEvents> {
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
 	    System.err.println("{ IMPOSSIBLE TO VIEW A GAME EVENT }");
+	}
+	return retrn;
+    }
+
+    public GameEvents getByName(String eventName) {
+	GameEvents retrn = null;
+	try {
+	    String sql = "SELECT id, username FROM GameEvents WHERE eventName = '" + eventName + "'";
+	    ResultSet resultSet = UtilBD.consultDB(sql);
+	    while (resultSet.next()) {
+		Integer id2 = resultSet.getInt("id");
+		String eventName2 = resultSet.getString("eventName");
+		retrn = new GameEvents(id2, eventName2);
+	    }
+	    resultSet.getStatement().close();
+	} catch (SQLException e) {
+	    System.err.println("{ IMPOSSIBLE TO VIEW GAME EVENT}");
 	}
 	return retrn;
     }

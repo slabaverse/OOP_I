@@ -11,17 +11,42 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/adam/eclipse-workspace/poo_1/javafx/javafx-sdk-15/lib/javafx.controls.jar">
+	<classpathentry kind="lib" path="/home/adam/eclipse-workspace/poo_1/javaFX/openjfx-15_linux-x64_bin-sdk/javafx-sdk-15/lib/javafx.controls.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/adam/eclipse-workspace/poo_1/javafx/javafx-sdk-15/lib/javafx.base.jar">
+	<classpathentry kind="lib" path="/home/adam/eclipse-workspace/poo_1/javaFX/openjfx-15_linux-x64_bin-sdk/javafx-sdk-15/lib/javafx.base.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/adam/eclipse-workspace/poo_1/javafx/javafx-sdk-15/lib/javafx.graphics.jar">
+	<classpathentry kind="lib" path="/home/adam/eclipse-workspace/poo_1/javaFX/openjfx-15_linux-x64_bin-sdk/javafx-sdk-15/lib/javafx.fxml.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/home/adam/eclipse-workspace/poo_1/javaFX/openjfx-15_linux-x64_bin-sdk/javafx-sdk-15/lib/javafx.graphics.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/home/adam/eclipse-workspace/poo_1/javaFX/openjfx-15_linux-x64_bin-sdk/javafx-sdk-15/lib/javafx.media.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/home/adam/eclipse-workspace/poo_1/javaFX/openjfx-15_linux-x64_bin-sdk/javafx-sdk-15/lib/javafx.swing.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/home/adam/eclipse-workspace/poo_1/javaFX/openjfx-15_linux-x64_bin-sdk/javafx-sdk-15/lib/javafx.web.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/home/adam/eclipse-workspace/poo_1/javaFX/openjfx-15_linux-x64_bin-sdk/javafx-sdk-15/lib/javafx-swt.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>

@@ -48,6 +48,15 @@ public abstract class Events {
 	this.eventDescription = eventDescription;
     }
 
+    public Events(String eventName) {
+	this.eventName = eventName;
+    }
+
+    public Events(Integer eventId, String eventName) {
+	this.eventId = eventId;
+	this.eventName = eventName;
+    }
+
     public User getUser() {
 	return user;
     }
