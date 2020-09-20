@@ -57,6 +57,23 @@ public abstract class Events {
 	this.eventName = eventName;
     }
 
+    public Events(String eventName, String eventDate, String eventLocal, String eventDescription) {
+	super();
+	this.eventName = eventName;
+	this.eventDate = eventDate;
+	this.eventLocal = eventLocal;
+	this.eventDescription = eventDescription;
+    }
+
+    public Events(Integer eventId, String eventName, String eventDate, String eventLocal, String eventDescription) {
+	super();
+	this.eventId = eventId;
+	this.eventName = eventName;
+	this.eventDate = eventDate;
+	this.eventLocal = eventLocal;
+	this.eventDescription = eventDescription;
+    }
+
     public User getUser() {
 	return user;
     }

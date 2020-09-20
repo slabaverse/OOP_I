@@ -122,28 +122,28 @@ public class UserDAO implements InterfaceDAO<User> {
 	}
 	return retrn;
     }
-    
-	public List<User> getByName2(String username) {
-		List<User> result = new ArrayList<User>();
-		
-		try {
-			String sql = "SELECT username, password FROM User "
-					+ "WHERE username = '" + username + "';";
-			ResultSet resultSet = UtilBD.consultDB(sql);
-			
-			while (resultSet.next()) {
-				String usrname = resultSet.getString("username");
-				String password = resultSet.getString("password");
-				result.add(new User(usrname, password));
-			}
-			
-			resultSet.getStatement().close();
-		} catch (SQLException e) {
-		    Alert_FX.error("{ IMPOSSIBLE TO VIEW USER }");
-		}
-		
-		return result;
+
+    public List<User> getByName2(String username) {
+	List<User> result = new ArrayList<User>();
+
+	try {
+	    String sql = "SELECT id, username, password FROM User " + "WHERE username = '" + username + "';";
+	    ResultSet resultSet = UtilBD.consultDB(sql);
+
+	    while (resultSet.next()) {
+		Integer id = resultSet.getInt("id");
+		String usrname = resultSet.getString("username");
+		String password = resultSet.getString("password");
+		result.add(new User(id, usrname, password));
+	    }
+
+	    resultSet.getStatement().close();
+	} catch (SQLException e) {
+	    Alert_FX.error("{ IMPOSSIBLE TO VIEW USER }");
 	}
+
+	return result;
+    }
 
     public List<Marketplace> getMarketplace(User usr) {
 	List<Marketplace> marketplace = new ArrayList<Marketplace>();

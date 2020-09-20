@@ -173,6 +173,8 @@ public class AddEvent_FX {
 			Alert_FX.alert("WICH GAME?");
 			return;
 		    }
+		    
+		    System.out.println(loggedUser.getId());
 
 		    new GameEventsDAO().add(new GameEvents(loggedUser , eventNameTxt.getText(), eventDateTxt.getText(),
 			    eventLocalTxt.getText(), eventDescriptionTxt.getText(), gameNameTxt.getText()));
@@ -187,7 +189,7 @@ public class AddEvent_FX {
 
     private void openEventScreen() {
 	try {
-	    new GameEvents_FX().start(stage);
+	    new GameEvents_FX(loggedUser).start(stage);
 	} catch (Exception e) {
 	    Alert_FX.error("WHERE'S THE GAME EVENTS SCREEN?");
 	}
@@ -198,7 +200,7 @@ public class AddEvent_FX {
 	    @Override
 	    public void handle(ActionEvent event) {
 		try {
-		    new GameEvents_FX().start(stage);
+		    new GameEvents_FX(loggedUser).start(stage);
 		} catch (Exception e) {
 		    Alert_FX.error("WHERE'S THE GAME EVENTS SCREEN?");
 		}

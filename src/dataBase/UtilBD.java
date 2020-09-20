@@ -158,6 +158,7 @@ public class UtilBD {
 		+ "CONSTRAINT user_fk FOREIGN KEY (user_fk) REFERENCES User (id) ON UPDATE CASCADE ON DELETE CASCADE, "
 		+ "CONSTRAINT gameevents_fk FOREIGN KEY (gameevents_fk) REFERENCES GameEvents (id) ON UPDATE CASCADE ON DELETE CASCADE);");
 	stm.executeUpdate("INSERT INTO UserGameEvents (user_fk, gameevents_fk) VALUES (1,1)");
+	stm.executeUpdate("INSERT INTO UserGameEvents (user_fk, gameevents_fk) VALUES (2,2)");
     }
 
     private static void createUserDevEvents(Statement stm) throws SQLException {

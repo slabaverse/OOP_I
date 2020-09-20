@@ -143,9 +143,10 @@ public class GameEvents_FX extends Application {
 	    }
 	};
     }
+    
 
     private EventHandler<ActionEvent> openEditScreen() {
-	return new EventHandler<ActionEvent>() {
+		return new EventHandler<ActionEvent>() {
 	    @Override
 	    public void handle(ActionEvent event) {
 		try {
@@ -156,8 +157,9 @@ public class GameEvents_FX extends Application {
 
 		    GameEvents events = new GameEventsDAO()
 			    .get(table.getSelectionModel().getSelectedItem().getEventId());
-		    new EditEvents_FX(events).start(stage);
+		    new EditEvents_FX(events, loggedUser).start(stage);
 		} catch (Exception e) {
+		    System.out.println(e);
 		    Alert_FX.error("HMM, I COULDN'T OPEN EDIT SCREEN");
 		}
 	    }
@@ -195,7 +197,6 @@ public class GameEvents_FX extends Application {
 
 		GameEventsDAO gameDAO = new GameEventsDAO();
 		GameEvents gameEv = gameDAO.get(table.getSelectionModel().getSelectedItem().getEventId());
-		System.out.println(gameEv.getEventId());
 		gameDAO.remove(gameEv);
 
 		updateData();
