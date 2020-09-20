@@ -14,11 +14,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class EditEvents_FX extends Application {
     private Stage stage;
     private User loggedUser;
+    private Label lblEditEvents;
     private ImageView game;
     private TextField eventNameTxt;
     private TextField eventDateTxt;
@@ -56,6 +58,10 @@ public class EditEvents_FX extends Application {
 	
 	Image image = new Image("/img/game.png");
 	game = new ImageView(image);
+	
+	lblEditEvents = new Label("SET GAME EVENTS");
+	lblEditEvents.setFont(new Font(40));
+	lblEditEvents.styleProperty().set("-fx-text-fill: #778899");
 
 	eventNameTxt = new TextField();
 	eventNameTxt.setText(gameEv.getEventName());
@@ -98,26 +104,29 @@ public class EditEvents_FX extends Application {
 		"-fx-text-fill: #FFFFFF; -fx-border-color: #4169E1; -fx-border-radius: 0; -fx-background-color: #4169E1;");
 
 	pane = new AnchorPane();
-	pane.styleProperty().set("-fx-background-color: #3E3E3E");
+	pane.styleProperty().set("-fx-background-color: #F2F8D2");
 
-	pane.getChildren().addAll(game, eventNameTxt, eventDateTxt, eventLocalTxt, eventDescriptionTxt, gameNameTxt, saveBtn,
+	pane.getChildren().addAll(lblEditEvents, game, eventNameTxt, eventDateTxt, eventLocalTxt, eventDescriptionTxt, gameNameTxt, saveBtn,
 		cancelBtn);
     }
 
     private void configLayout() {
 	pane.setPrefSize(1000, 600);
-
+	
 	game.setLayoutX(450);
-
+	
+	lblEditEvents.setLayoutX(30);
+	lblEditEvents.setLayoutY(30);
+	
 	eventNameTxt.setLayoutX(30);
 	eventNameTxt.setLayoutY(160);
 	eventNameTxt.setPrefHeight(40);
-	eventNameTxt.setPrefWidth((pane.getPrefWidth() - 60) / 2);
+	eventNameTxt.setPrefWidth((pane.getPrefWidth() - 60)/2);
 
 	eventDateTxt.setLayoutX(30);
 	eventDateTxt.setLayoutY(220);
 	eventDateTxt.setPrefHeight(40);
-	eventDateTxt.setPrefWidth((pane.getPrefWidth() - 60) / 2);
+	eventDateTxt.setPrefWidth((pane.getPrefWidth() - 60)/2);
 
 	eventLocalTxt.setLayoutX(30);
 	eventLocalTxt.setLayoutY(280);

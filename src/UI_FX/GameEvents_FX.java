@@ -10,17 +10,20 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class GameEvents_FX extends Application {
 
     private Stage stage;
     private User loggedUser;
+    private Label lblEvents;
     private Button addBtn;
     private Button editBtn;
     private Button removeBtn;
@@ -55,6 +58,10 @@ public class GameEvents_FX extends Application {
 
     private void initComponents() {
 
+	lblEvents = new Label("GAME EVENTS");
+	lblEvents.setFont(new Font(40));
+	lblEvents.styleProperty().set("-fx-text-fill: #4169E1");
+	
 	addBtn = new Button("ADD");
 	addBtn.setOnAction(openAddScreen());
 	addBtn.styleProperty().set(
@@ -97,11 +104,14 @@ public class GameEvents_FX extends Application {
 	pane = new AnchorPane();
 	pane.styleProperty().set("-fx-background-color: #FFFFFF");
 
-	pane.getChildren().addAll(addBtn, editBtn, removeBtn, detailsBtn, table);
+	pane.getChildren().addAll(lblEvents, addBtn, editBtn, removeBtn, detailsBtn, table);
     }
 
     private void configLayout() {
 	pane.setPrefSize(1000, 640);
+	
+	lblEvents.setLayoutX(350);
+	lblEvents.setLayoutY(30);
 
 	table.setLayoutX(100);
 	table.setLayoutY(150);
