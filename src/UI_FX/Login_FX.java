@@ -1,16 +1,18 @@
 package UI_FX;
 
+import java.util.List;
+
 import dataBase.UserDAO;
 import entities.User;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -18,11 +20,10 @@ import javafx.stage.Stage;
 public class Login_FX extends Application {
 
     private Stage stage;
-    private Label lblSkynet;
+    private ImageView logo;
     private TextField txtUser;
     private PasswordField txtPassword;
     private Button btnLogin;
-    private Button btnLogout;
     private Button btnRegister;
     private Pane pane;
 
@@ -37,65 +38,70 @@ public class Login_FX extends Application {
 	btnLogin.requestFocus();
 
 	stage.setScene(scene);
-	stage.setTitle("Steam login");
+	stage.getIcons().add(new Image("/img/logo.png"));
+	stage.setTitle("Skynet Login");
 	stage.setResizable(false);
 	stage.show();
     }
 
     private void initComponentes() {
-	lblSkynet = new Label("SKYNET (/)");
+
+	Image image = new Image("/img/logo.png");
+	logo = new ImageView(image);
 
 	txtUser = new TextField();
 	txtUser.setPromptText("USERNAME");
+	txtUser.styleProperty().set(
+		"-fx-text-fill: #778899; -fx-border-color: #4169E1; -fx-border-radius: 0; -fx-background-color: #F8F8FF;");
 
 	txtPassword = new PasswordField();
 	txtPassword.setPromptText("PASSWORD");
+	txtPassword.styleProperty().set(
+		"-fx-text-fill: #778899; -fx-border-color: #4169E1; -fx-border-radius: 0; -fx-background-color: #F8F8FF;");
 
 	btnLogin = new Button("LOGIN");
+	btnLogin.styleProperty().set(
+		"-fx-text-fill: #FFFFFF; -fx-border-color: #4169E1; -fx-border-radius: 0; -fx-background-color: #4169E1;");
 	btnLogin.setOnAction(login());
 
-	btnLogout = new Button("EXIT");
-	btnLogout.setOnAction(exit());
-
 	btnRegister = new Button("NEW USER");
+	btnRegister.styleProperty().set(
+		"-fx-text-fill: #FFFFFF; -fx-border-color: #4169E1; -fx-border-radius: 0; -fx-background-color: #4169E1;");
 	btnRegister.setOnAction(openRegisterScreen());
 
 	pane = new AnchorPane();
+	pane.styleProperty().set("-fx-background-color: #FFFFFF");
 
-	pane.getChildren().add(lblSkynet);
-	pane.getChildren().addAll(txtUser, txtPassword, btnLogin, btnLogout, btnRegister);
+	pane.getChildren().addAll(logo, txtUser, txtPassword, btnLogin, btnRegister);
     }
 
     private void configLayout() {
-	pane.setPrefSize(320, 180);
+	pane.setPrefSize(800, 500);
 
-	lblSkynet.setLayoutX(10);
-	lblSkynet.setLayoutY(10);
+	logo.setLayoutX(0);
+	logo.setLayoutY(0);
+	logo.setFitHeight(500);
+	logo.setFitWidth(800);
 
-	txtUser.setLayoutX(10);
-	txtUser.setLayoutY(35);
-	txtUser.setPrefHeight(30);
-	txtUser.setPrefWidth(pane.getPrefWidth() - 20);
+	txtUser.setLayoutX(22);
+	txtUser.setLayoutY(165);
+	txtUser.setPrefHeight(50);
+	txtUser.setPrefWidth(pane.getPrefWidth() - 500);
 
-	txtPassword.setLayoutX(10);
-	txtPassword.setLayoutY(75);
-	txtPassword.setPrefHeight(30);
-	txtPassword.setPrefWidth(pane.getPrefWidth() - 20);
+	txtPassword.setLayoutX(22);
+	txtPassword.setLayoutY(225);
+	txtPassword.setPrefHeight(50);
+	txtPassword.setPrefWidth(pane.getPrefWidth() - 500);
 
-	btnLogin.setLayoutX(10);
-	btnLogin.setLayoutY(115);
-	btnLogin.setPrefHeight(20);
-	btnLogin.setPrefWidth((pane.getPrefWidth() - 30) / 2);
+	btnLogin.setLayoutX(22);
+	btnLogin.setLayoutY(295);
+	btnLogin.setPrefHeight(45);
+	btnLogin.setPrefWidth((pane.getPrefWidth() - 500));
 
-	btnLogout.setLayoutX(btnLogin.getPrefWidth() + 20);
-	btnLogout.setLayoutY(115);
-	btnLogout.setPrefHeight(20);
-	btnLogout.setPrefWidth((pane.getPrefWidth() - 30) / 2);
-
-	btnRegister.setLayoutX(10);
-	btnRegister.setLayoutY(145);
-	btnRegister.setPrefHeight(20);
-	btnRegister.setPrefWidth(pane.getPrefWidth() - 20);
+	btnRegister.setLayoutX(22);
+	btnRegister.setLayoutY(355);
+	btnRegister.setPrefHeight(45);
+	btnRegister.setPrefWidth(pane.getPrefWidth() - 500);
     }
 
     private EventHandler<ActionEvent> login() {
@@ -104,39 +110,30 @@ public class Login_FX extends Application {
 	    public void handle(ActionEvent event) {
 		try {
 		    if (txtUser.getText().isBlank()) {
-			Alert_FX.alert("INFORM USERNAME");
+			Alert_FX.alert("WOW, YOU FORGOT YOUR USERNAME");
 			return;
 		    }
 		    if (txtPassword.getText().isBlank()) {
-			Alert_FX.alert("INFORM PASSWORD");
+			Alert_FX.alert("WITHOUT PASSWORD? TRY AGAIN BUDY");
 			return;
 		    }
 
-		    User user_DB = new UserDAO().getByName(txtUser.getText());
+		    List<User> user_DB = new UserDAO().getByName2(txtUser.getText());
 
-		    if (user_DB == null) {
-			Alert_FX.alert("INVALID USERNAME OR PASSWORD");
+		    if (user_DB.get(0) == null) {
+			Alert_FX.alert("I THINK THAT SOMETHING'S NOT RIGHT");
 			return;
 		    }
 
-		    if (!user_DB.getPassword().contentEquals(txtPassword.getText())) {
-			Alert_FX.alert("INVALID USERNAME OR PASSWORD");
+		    if (!user_DB.get(0).getPassword().contentEquals(txtPassword.getText())) {
+			Alert_FX.alert("I THINK THAT SOMETHING'S NOT RIGHT");
 			return;
 		    }
 
 		    new Main_FX(txtUser.getText()).start(stage);
 		} catch (Exception e) {
-		    Alert_FX.error("MAIN SCREEN NOT AVALIABLE");
+		    Alert_FX.error("SORRY, MAIN SCREEN NOT AVALIABLE");
 		}
-	    }
-	};
-    }
-
-    private EventHandler<ActionEvent> exit() {
-	return new EventHandler<ActionEvent>() {
-	    @Override
-	    public void handle(ActionEvent event) {
-		Platform.exit();
 	    }
 	};
     }
@@ -148,7 +145,7 @@ public class Login_FX extends Application {
 		try {
 		    new NewUser_FX().start(stage);
 		} catch (Exception e) {
-		    Alert_FX.error("IMPOSSIBLE TO SHOW REGISTER SCREEN");
+		    Alert_FX.error("WHERE'S THE REGISTRATION SCREEN?");
 		}
 	    }
 	};

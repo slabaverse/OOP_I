@@ -137,6 +137,8 @@ public class UtilBD {
 		+ "CONSTRAINT username_fk FOREIGN KEY (username) REFERENCES User (username) ON UPDATE CASCADE ON DELETE CASCADE);");
 	stm.executeUpdate("INSERT INTO Post (username, content) "
 		+ "VALUES('@adam','Primeiro post, Skynet bombando')");
+	stm.executeUpdate("INSERT INTO Post (username, content) "
+		+ "VALUES('@angela','Qual a bora de hoje?')");
 
     }
 

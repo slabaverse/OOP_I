@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -17,6 +19,7 @@ public class NewUser_FX extends Application {
 
     private Stage stage;
     private Pane pane;
+    private ImageView nu;
     private TextField txtUser;
     private PasswordField txtPassword1;
     private PasswordField txtPassword2;
@@ -38,78 +41,107 @@ public class NewUser_FX extends Application {
 	btnBack.requestFocus();
 
 	stage.setScene(scene);
-	stage.setTitle("REGISTER A NEW USER");
+	stage.getIcons().add(new Image("/img/nu.png"));
+	stage.setTitle("NEW USER");
 	stage.setResizable(false);
 	stage.show();
     }
 
     private void initComponentes() {
+
+	Image image = new Image("/img/nu.png");
+	nu = new ImageView(image);
+
 	txtUser = new TextField();
 	txtUser.setPromptText("USERNAME: ");
+	txtUser.styleProperty().set(
+		"-fx-text-fill: #778899; -fx-border-color: #4169E1; -fx-border-radius: 0; -fx-background-color: #F8F8FF;");
 
 	txtPassword1 = new PasswordField();
 	txtPassword1.setPromptText("PASSWORD: ");
+	txtPassword1.styleProperty().set(
+		"-fx-text-fill: #778899; -fx-border-color: #4169E1; -fx-border-radius: 0; -fx-background-color: #F8F8FF;");
 
 	txtPassword2 = new PasswordField();
-	txtPassword2.setPromptText("CONFIORM YOUR PASSWORD: ");
+	txtPassword2.setPromptText("CONFIRM YOUR PASSWORD: ");
+	txtPassword2.styleProperty().set(
+		"-fx-text-fill: #778899; -fx-border-color: #4169E1; -fx-border-radius: 0; -fx-background-color: #F8F8FF;");
 
 	txtName = new TextField();
 	txtName.setPromptText("NAME: ");
+	txtName.styleProperty().set(
+		"-fx-text-fill: #778899; -fx-border-color: #4169E1; -fx-border-radius: 0; -fx-background-color: #F8F8FF;");
 
 	txtBirthdate = new TextField();
-	txtBirthdate.setPromptText("BIRTHDATE: ");
+	txtBirthdate.setPromptText("BIRTHDATE (DD/MM/AAA): ");
+	txtBirthdate.styleProperty().set(
+		"-fx-text-fill: #778899; -fx-border-color: #4169E1; -fx-border-radius: 0; -fx-background-color: #F8F8FF;");
 
 	txtRelationship = new TextField();
 	txtRelationship.setPromptText("RELATIONSHIP STATUS: ");
+	txtRelationship.styleProperty().set(
+		"-fx-text-fill: #778899; -fx-border-color: #4169E1; -fx-border-radius: 0; -fx-background-color: #F8F8FF;");
 
 	btnCreate = new Button("REGISTER");
+	btnCreate.styleProperty().set(
+		"-fx-text-fill: #FFFFFF; -fx-border-color: #4169E1; -fx-border-radius: 0; -fx-background-color: #4169E1;");
 	btnCreate.setOnAction(register());
 
 	btnBack = new Button("BACK");
+	btnBack.styleProperty().set(
+		"-fx-text-fill: #FFFFFF; -fx-border-color: #4169E1; -fx-border-radius: 0; -fx-background-color: #4169E1;");
 	btnBack.setOnAction(back());
 
 	pane = new AnchorPane();
-	pane.getChildren().addAll(txtUser, txtName, txtPassword1, txtPassword2, txtBirthdate, btnCreate, btnBack);
+	pane.getChildren().addAll(nu, txtUser, txtPassword1, txtPassword2, txtName, txtBirthdate, txtRelationship,
+		btnCreate, btnBack);
 
     }
 
     private void configLayout() {
-	pane.setPrefSize(320, 245);
+	pane.setPrefSize(760, 828);
 
-	txtUser.setLayoutX(10);
-	txtUser.setLayoutY(10);
-	txtUser.setPrefHeight(30);
-	txtUser.setPrefWidth(pane.getPrefWidth() - 20);
+	txtUser.setLayoutX(550);
+	txtUser.setLayoutY(150);
+	txtUser.setPrefHeight(40);
+	txtUser.setPrefWidth(pane.getPrefWidth() - 120);
 
-	txtName.setLayoutX(10);
-	txtName.setLayoutY(50);
-	txtName.setPrefHeight(30);
-	txtName.setPrefWidth(pane.getPrefWidth() - 20);
+	txtPassword1.setLayoutX(550);
+	txtPassword1.setLayoutY(200);
+	txtPassword1.setPrefHeight(40);
+	txtPassword1.setPrefWidth(pane.getPrefWidth() - 120);
 
-	txtPassword1.setLayoutX(10);
-	txtPassword1.setLayoutY(90);
-	txtPassword1.setPrefHeight(30);
-	txtPassword1.setPrefWidth(pane.getPrefWidth() - 20);
+	txtPassword2.setLayoutX(550);
+	txtPassword2.setLayoutY(250);
+	txtPassword2.setPrefHeight(40);
+	txtPassword2.setPrefWidth(pane.getPrefWidth() - 120);
+	
+	txtName.setLayoutX(550);
+	txtName.setLayoutY(300);
+	txtName.setPrefHeight(40);
+	txtName.setPrefWidth(pane.getPrefWidth() - 120);
 
-	txtPassword2.setLayoutX(10);
-	txtPassword2.setLayoutY(130);
-	txtPassword2.setPrefHeight(30);
-	txtPassword2.setPrefWidth(pane.getPrefWidth() - 20);
+	txtBirthdate.setLayoutX(550);
+	txtBirthdate.setLayoutY(350);
+	txtBirthdate.setPrefHeight(40);
+	txtBirthdate.setPrefWidth(pane.getPrefWidth() - 120);
 
-	txtBirthdate.setLayoutX(10);
-	txtBirthdate.setLayoutY(170);
-	txtBirthdate.setPrefHeight(30);
-	txtBirthdate.setPrefWidth(pane.getPrefWidth() - 20);
+	txtRelationship.setLayoutX(550);
+	txtRelationship.setLayoutY(400);
+	txtRelationship.setPrefHeight(40);
+	txtRelationship.setPrefWidth(pane.getPrefWidth() - 120);
 
-	btnCreate.setLayoutX(10);
-	btnCreate.setLayoutY(210);
-	btnCreate.setPrefHeight(20);
-	btnCreate.setPrefWidth((pane.getPrefWidth() - 30) / 2);
+	btnCreate.setLayoutX(550);
+	btnCreate.setLayoutY(480);
+	btnCreate.setPrefHeight(45);
+	btnCreate.setPrefWidth(pane.getPrefWidth() - 120);
+	
+	btnBack.setLayoutX(550);
+	btnBack.setLayoutY(550);
+	btnBack.setPrefHeight(45);
+	btnBack.setPrefWidth(pane.getPrefWidth() - 120);
 
-	btnBack.setLayoutX(btnCreate.getPrefWidth() + 20);
-	btnBack.setLayoutY(210);
-	btnBack.setPrefHeight(20);
-	btnBack.setPrefWidth((pane.getPrefWidth() - 30) / 2);
+
     }
 
     private EventHandler<ActionEvent> back() {
@@ -126,38 +158,39 @@ public class NewUser_FX extends Application {
 	    @Override
 	    public void handle(ActionEvent event) {
 		if (txtUser.getText().isBlank()) {
-		    Alert_FX.alert("INFORM YOUR USERNAME");
-		    return;
-		}
-		if (txtName.getText().isBlank()) {
-		    Alert_FX.alert("INFORM YOUR NAME");
+		    Alert_FX.alert("USERNAME?");
 		    return;
 		}
 		if (txtPassword1.getText().isBlank()) {
-		    Alert_FX.alert("CREATE A PASSWORD");
+		    Alert_FX.alert("PASSWORD?");
 		    return;
 		}
 		if (txtPassword2.getText().isBlank()) {
-		    Alert_FX.alert("WRITE YOUR PASSWORD AGAIN");
+		    Alert_FX.alert("PASSWORD..AGAAAAIN?");
 		    return;
 		}
+		if (txtName.getText().isBlank()) {
+		    Alert_FX.alert("FULL NAME BRO!");
+		    return;
+		}
+
 		if (!txtPassword1.getText().contentEquals(txtPassword2.getText())) {
-		    Alert_FX.alert("DIFFERENT PASSWORDS");
+		    Alert_FX.alert("PASSWORD != PASSWORD CONFIRMATION");
 		    return;
 		}
 		if (txtBirthdate.getText().isBlank()) {
-		    Alert_FX.alert("INFORM YOUR BIRTHDATE");
+		    Alert_FX.alert("B-DAY?");
 		    return;
 		}
 		if (txtRelationship.getText().isBlank()) {
-		    Alert_FX.alert("INFORM YOUR RELATIONSHIP STATUS");
+		    Alert_FX.alert("RELATIONSHIP?");
 		    return;
 		}
 
-		new UserDAO().add(new User(txtUser.getText(), txtName.getText(), txtPassword1.getText(),
+		new UserDAO().add(new User(txtUser.getText(), txtPassword1.getText(), txtName.getText(), 
 			txtBirthdate.getText(), txtRelationship.getText()));
 
-		Alert_FX.info("USER SUCCESSFULLY ADDED)");
+		Alert_FX.info("YOUR SOUL IS OURS, OH I MEAN..WELCOME :)");
 
 		openLoginWindow();
 	    }
@@ -168,7 +201,7 @@ public class NewUser_FX extends Application {
 	try {
 	    new Login_FX().start(stage);
 	} catch (Exception e) {
-	    Alert_FX.error("IMPOSSIBLE TO INICIATE LOGIN SCREEN");
+	    Alert_FX.error("WHERE'S THE LOGIN SCREEN?");
 	}
     }
 }
