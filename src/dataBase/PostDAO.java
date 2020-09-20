@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import UI_FX.Alert_FX;
 import entities.Post;
 
 public class PostDAO implements InterfaceDAO<Post> {
@@ -21,7 +22,7 @@ public class PostDAO implements InterfaceDAO<Post> {
 	    UtilBD.updateDB(sql);
 
 	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T ADD THIS POST }");
+	    Alert_FX.error("{ COULDN'T ADD THIS POST }");
 	}
     }
 
@@ -32,7 +33,7 @@ public class PostDAO implements InterfaceDAO<Post> {
 		    + ";";
 	    UtilBD.updateDB(sql);
 	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T SET POST }");
+	    Alert_FX.error("{ COULDN'T SET POST }");
 	}
     }
 
@@ -46,7 +47,7 @@ public class PostDAO implements InterfaceDAO<Post> {
 	    UtilBD.updateDB(sql);
 
 	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T REMOVE THIS POST }");
+	    Alert_FX.error("{ COULDN'T REMOVE THIS POST }");
 	}
     }
 
@@ -65,7 +66,7 @@ public class PostDAO implements InterfaceDAO<Post> {
 	    }
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T LIST POSTS }");
+	    Alert_FX.error("{ COULDN'T LIST POSTS }");
 	}
 	return retrn;
     }
@@ -83,7 +84,7 @@ public class PostDAO implements InterfaceDAO<Post> {
 	    }
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
-	    System.err.println("{ IMPOSSIBLE TO CONSULT POSTS AT DB }");
+	    Alert_FX.error("{ IMPOSSIBLE TO CONSULT POSTS AT DB }");
 	}
 	return retrn;
     }
@@ -99,7 +100,7 @@ public class PostDAO implements InterfaceDAO<Post> {
 
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
-	    System.err.println("{ UNABLE TO DO TI }");
+	    Alert_FX.error("{ UNABLE TO DO TI }");
 	}
 
 	return id;

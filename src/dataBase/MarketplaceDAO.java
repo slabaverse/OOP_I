@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import UI_FX.Alert_FX;
 import entities.Marketplace;
 
 public class MarketplaceDAO implements InterfaceDAO<Marketplace> {
@@ -22,7 +23,7 @@ public class MarketplaceDAO implements InterfaceDAO<Marketplace> {
 	    UtilBD.updateDB(sql);
 
 	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T ADD THIS PRODUCT }");
+	    Alert_FX.error("{ COULDN'T ADD THIS PRODUCT }");
 	}
     }
 
@@ -34,7 +35,7 @@ public class MarketplaceDAO implements InterfaceDAO<Marketplace> {
 		    + "WHERE id = " + marketplace.getId() + ";";
 	    UtilBD.updateDB(sql);
 	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T SET PRODUCT }");
+	    Alert_FX.error("{ COULDN'T SET PRODUCT }");
 	}
     }
 
@@ -47,7 +48,7 @@ public class MarketplaceDAO implements InterfaceDAO<Marketplace> {
 	    sql = "DELETE FROM UserMarketplace WHERE mkt_fk = '" + marketplace.getId() + "'";
 	    UtilBD.updateDB(sql);
 	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T REMOVE THIS PRODUCT }");
+	    Alert_FX.error("{ COULDN'T REMOVE THIS PRODUCT }");
 	}
     }
 
@@ -67,7 +68,7 @@ public class MarketplaceDAO implements InterfaceDAO<Marketplace> {
 	    }
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T LIST THE PRODUCTS }");
+	    Alert_FX.error("{ COULDN'T LIST THE PRODUCTS }");
 	}
 	return retrn;
     }
@@ -87,7 +88,7 @@ public class MarketplaceDAO implements InterfaceDAO<Marketplace> {
 	    }
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
-	    System.err.println("{ IMPOSSIBLE TO CONSULT A PRODUCT AT DB }");
+	    Alert_FX.error("{ IMPOSSIBLE TO CONSULT A PRODUCT AT DB }");
 	}
 	return retrn;
     }
@@ -103,7 +104,7 @@ public class MarketplaceDAO implements InterfaceDAO<Marketplace> {
 
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
-	    System.err.println("{ UNABLE TO DO TI }");
+	    Alert_FX.error("{ UNABLE TO DO TI }");
 	}
 
 	return id;

@@ -130,7 +130,7 @@ public class Login_FX extends Application {
 			return;
 		    }
 
-		    new Main_FX(txtUser.getText()).start(stage);
+		    new Main_FX(user_DB.get(0)).start(stage);
 		} catch (Exception e) {
 		    Alert_FX.error("SORRY, MAIN SCREEN NOT AVALIABLE");
 		}

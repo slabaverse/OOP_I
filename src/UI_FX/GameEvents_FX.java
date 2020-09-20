@@ -2,6 +2,7 @@ package UI_FX;
 
 import dataBase.GameEventsDAO;
 import entities.GameEvents;
+import entities.User;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,20 +20,18 @@ import javafx.stage.Stage;
 public class GameEvents_FX extends Application {
 
     private Stage stage;
+    private User loggedUser;
     private Button addBtn;
     private Button editBtn;
     private Button removeBtn;
+    private Button detailsBtn;
     private Pane pane;
 
     private TableView<GameEvents> table = new TableView<GameEvents>();
     private ObservableList<GameEvents> tableData;
     private TableColumn eventId;
-    private TableColumn user;
     private TableColumn eventName;
     private TableColumn eventDate;
-    private TableColumn eventLocal;
-    private TableColumn eventDescription;
-    private TableColumn gameName;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -48,63 +47,57 @@ public class GameEvents_FX extends Application {
 	stage.setResizable(false);
 	stage.show();
     }
+    
+    public GameEvents_FX(User loggedUser) {
+	this.loggedUser = loggedUser;
+    }
+
 
     private void initComponents() {
-
-	table.setEditable(true);
-
-	updateData();
-
-	eventId = new TableColumn("id");
-	eventId.setMinWidth(100);
-	eventId.setCellValueFactory(new PropertyValueFactory<GameEvents, Integer>("id"));
-
-	user = new TableColumn("username");
-	user.setMinWidth(400);
-	user.setCellValueFactory(new PropertyValueFactory<GameEvents, String>("username"));
-
-	eventName = new TableColumn("Nationality");
-	eventName.setMinWidth(298);
-	eventName.setCellValueFactory(new PropertyValueFactory<GameEvents, String>("eventName"));
-
-	eventDate = new TableColumn("Nationality");
-	eventDate.setMinWidth(298);
-	eventDate.setCellValueFactory(new PropertyValueFactory<GameEvents, String>("eventDate"));
-
-	eventLocal = new TableColumn("Nationality");
-	eventLocal.setMinWidth(298);
-	eventLocal.setCellValueFactory(new PropertyValueFactory<GameEvents, String>("eventLocal"));
-
-	eventDescription = new TableColumn("Nationality");
-	eventDescription.setMinWidth(298);
-	eventDescription.setCellValueFactory(new PropertyValueFactory<GameEvents, String>("eventDescription"));
-
-	gameName = new TableColumn("Nationality");
-	gameName.setMinWidth(298);
-	gameName.setCellValueFactory(new PropertyValueFactory<GameEvents, String>("gameName"));
-
-	table.getColumns().addAll(eventId, user, eventName, eventDate, eventLocal, eventDescription, gameName);
-	table.styleProperty().set("-fx-selection-bar: #32FF6B;");
 
 	addBtn = new Button("ADD");
 	addBtn.setOnAction(openAddScreen());
 	addBtn.styleProperty().set(
 		"-fx-text-fill: #FFFFFF; -fx-border-color: #4169E1; -fx-border-radius: 0; -fx-background-color: #4169E1;");
-//
-//	editBtn = new Button("EDIT");
-//	editBtn.setOnAction(openEditWindow());
-//	editBtn.styleProperty().set(
-//		"-fx-text-fill: #FFFFFF; -fx-border-color: #4169E1; -fx-border-radius: 0; -fx-background-color: #4169E1;");
+
+	editBtn = new Button("EDIT");
+	editBtn.setOnAction(openEditScreen());
+	editBtn.styleProperty().set(
+		"-fx-text-fill: #FFFFFF; -fx-border-color: #4169E1; -fx-border-radius: 0; -fx-background-color: #4169E1;");
 
 	removeBtn = new Button("REMOVE");
 	removeBtn.setOnAction(removeEvent());
 	removeBtn.styleProperty().set(
 		"-fx-text-fill: #FFFFFF; -fx-border-color: #4169E1; -fx-border-radius: 0; -fx-background-color: #4169E1;");
 
-	pane = new AnchorPane();
-	pane.styleProperty().set("-fx-background-color: #3E3E3E");
+	detailsBtn = new Button("SHOW MORE");
+	detailsBtn.setOnAction(openDetailsScreen());
+	detailsBtn.styleProperty().set(
+		"-fx-text-fill: #FFFFFF; -fx-border-color: #4169E1; -fx-border-radius: 0; -fx-background-color: #4169E1;");
 
-	pane.getChildren().addAll(table, addBtn, editBtn, removeBtn);
+	table.setEditable(true);
+
+	updateData();
+
+	eventId = new TableColumn("ID");
+	eventId.setMinWidth(90);
+	eventId.setCellValueFactory(new PropertyValueFactory<GameEvents, Integer>("eventId"));
+
+	eventName = new TableColumn("EVENT");
+	eventName.setMinWidth(298);
+	eventName.setCellValueFactory(new PropertyValueFactory<GameEvents, String>("eventName"));
+
+	eventDate = new TableColumn("DATE");
+	eventDate.setMinWidth(298);
+	eventDate.setCellValueFactory(new PropertyValueFactory<GameEvents, String>("eventDate"));
+
+	table.getColumns().addAll(eventId, eventName, eventDate);
+	table.styleProperty().set("-fx-selection-bar: #58FAF4;");
+
+	pane = new AnchorPane();
+	pane.styleProperty().set("-fx-background-color: #FFFFFF");
+
+	pane.getChildren().addAll(addBtn, editBtn, removeBtn, detailsBtn, table);
     }
 
     private void configLayout() {
@@ -126,10 +119,16 @@ public class GameEvents_FX extends Application {
 	editBtn.setPrefHeight(20);
 	editBtn.setPrefWidth(150);
 
+	detailsBtn.setLayoutX(325);
+	detailsBtn.setLayoutY(580);
+	detailsBtn.setPrefHeight(20);
+	detailsBtn.setPrefWidth(150);
+
 	removeBtn.setLayoutX(725);
 	removeBtn.setLayoutY(580);
 	removeBtn.setPrefHeight(20);
 	removeBtn.setPrefWidth(150);
+
     }
 
     private EventHandler<ActionEvent> openAddScreen() {
@@ -137,7 +136,7 @@ public class GameEvents_FX extends Application {
 	    @Override
 	    public void handle(ActionEvent event) {
 		try {
-		    new AddEvent_FX().start(stage);
+		    new AddEvent_FX(loggedUser).start(stage);
 		} catch (Exception e) {
 		    Alert_FX.error("WHERE'S THE ADD EVENT SCREEN? ");
 		}
@@ -145,25 +144,45 @@ public class GameEvents_FX extends Application {
 	};
     }
 
-//    private EventHandler<ActionEvent> openEditScreen() {
-//	return new EventHandler<ActionEvent>() {
-//	    @Override
-//	    public void handle(ActionEvent event) {
-//		try {
-//		    if (table.getSelectionModel().isEmpty()) {
-//			AlertFX.alert("Select a actor to be updated.");
-//			return;
-//		    }
-//
-//		    Protagonist actor = new ProtagonistDAO()
-//			    .getById(table.getSelectionModel().getSelectedItem().getId());
-//		    new EditActorFX(actor).start(stage);
-//		} catch (Exception e) {
-//		    AlertFX.error("Inable to open the actor edition window!");
-//		}
-//	    }
-//	};
-//    }
+    private EventHandler<ActionEvent> openEditScreen() {
+	return new EventHandler<ActionEvent>() {
+	    @Override
+	    public void handle(ActionEvent event) {
+		try {
+		    if (table.getSelectionModel().isEmpty()) {
+			Alert_FX.alert("WICH EVENT YOU WANNA UPDATE?.");
+			return;
+		    }
+
+		    GameEvents events = new GameEventsDAO()
+			    .get(table.getSelectionModel().getSelectedItem().getEventId());
+		    new EditEvents_FX(events).start(stage);
+		} catch (Exception e) {
+		    Alert_FX.error("HMM, I COULDN'T OPEN EDIT SCREEN");
+		}
+	    }
+	};
+    }
+
+    private EventHandler<ActionEvent> openDetailsScreen() {
+	return new EventHandler<ActionEvent>() {
+	    @Override
+	    public void handle(ActionEvent event) {
+		try {
+		    if (table.getSelectionModel().isEmpty()) {
+			Alert_FX.alert("WICH EVENTS YOU WANNA SEE?");
+			return;
+		    }
+
+		    GameEvents events = new GameEventsDAO()
+			    .get(table.getSelectionModel().getSelectedItem().getEventId());
+		    new EventDetailed_FX(events).start(new Stage());
+		} catch (Exception e) {
+		    Alert_FX.error("HMM, I COULDN'T OPEN EVENT DETAILS SCREEN");
+		}
+	    }
+	};
+    }
 
     private EventHandler<ActionEvent> removeEvent() {
 	return new EventHandler<ActionEvent>() {
@@ -176,6 +195,7 @@ public class GameEvents_FX extends Application {
 
 		GameEventsDAO gameDAO = new GameEventsDAO();
 		GameEvents gameEv = gameDAO.get(table.getSelectionModel().getSelectedItem().getEventId());
+		System.out.println(gameEv.getEventId());
 		gameDAO.remove(gameEv);
 
 		updateData();

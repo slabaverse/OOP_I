@@ -5,6 +5,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import UI_FX.Alert_FX;
+
 public class User {
 
     private Integer id;
@@ -228,9 +230,7 @@ public class User {
 		marketplace.remove(i);
 	    }
 	}
-	System.out.println();
-	System.out.println("{PRODUCT DELETED}");
-	System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+	Alert_FX.info("{PRODUCT DELETED}");
     }
 
     // POSTS
@@ -273,16 +273,14 @@ public class User {
 		posts.remove(i);
 	    }
 	}
-	System.out.println();
-	System.out.println("{POST DELETED}");
-	System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+
+	Alert_FX.info("{POST DELETED}");
     }
 
 
     // DEV EVENTS
 
     public void showDevEvents() {
-	System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	for (int i = 0; i < dev.size(); i++) {
 	    System.out.println();
 	    System.out.println("Dev Event #" + dev.get(i).getEventId() + " " + " by " + name + ", created on " + date
@@ -294,7 +292,6 @@ public class User {
     }
 
     public void showYourDevEvents() {
-	System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 	for (int i = 0; i < dev.size(); i++) {
 	    System.out.println();
 	    System.out.println("Dev Event #" + dev.get(i).getEventId() + " " + " by " + name + " created on " + date
@@ -349,9 +346,7 @@ public class User {
 		dev.remove(i);
 	    }
 	}
-	System.out.println();
-	System.out.println("{EVENT DELETED}");
-	System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+	Alert_FX.info("{EVENT DELETED}");
     }
 
 //GAME EVENTS
@@ -435,8 +430,6 @@ public class User {
 		game.remove(i);
 	    }
 	}
-	System.out.println();
-	System.out.println("{EVENT DELETED}");
-	System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+	Alert_FX.info("{EVENT DELETED}");
     }
 }

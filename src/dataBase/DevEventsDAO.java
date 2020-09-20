@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import UI_FX.Alert_FX;
 import entities.DevEvents;
 
 public class DevEventsDAO implements InterfaceDAO<DevEvents> {
@@ -13,10 +14,8 @@ public class DevEventsDAO implements InterfaceDAO<DevEvents> {
     public void add(DevEvents devEvents) {
 	try {
 	    String sql = "INSERT INTO DevEvents (username, eventName, eventDate, eventLocal, eventDescription) VALUES ('"
-		    + devEvents.getUser().getUsername() + "', '" 
-		    + devEvents.getEventName() + "', '"
-		    + devEvents.getEventDate() + "', '" 
-		    + devEvents.getEventLocal() + "', '"
+		    + devEvents.getUser().getUsername() + "', '" + devEvents.getEventName() + "', '"
+		    + devEvents.getEventDate() + "', '" + devEvents.getEventLocal() + "', '"
 		    + devEvents.getEventDescription() + "')";
 	    UtilBD.updateDB(sql);
 
@@ -25,7 +24,7 @@ public class DevEventsDAO implements InterfaceDAO<DevEvents> {
 	    UtilBD.updateDB(sql);
 
 	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T ADD THIS DEV EVENT }");
+	    Alert_FX.error("{ COULDN'T ADD THIS DEV EVENT }");
 	}
     }
 
@@ -38,7 +37,7 @@ public class DevEventsDAO implements InterfaceDAO<DevEvents> {
 		    + devEvents.getEventId() + ";";
 	    UtilBD.updateDB(sql);
 	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T SET THIS DEV EVENT }");
+	    Alert_FX.error("{ COULDN'T SET THIS DEV EVENT }");
 	}
     }
 
@@ -51,7 +50,7 @@ public class DevEventsDAO implements InterfaceDAO<DevEvents> {
 	    sql = "DELETE FROM UserDevEvents WHERE devevents_fk = '" + devEvents.getEventId() + "'";
 	    UtilBD.updateDB(sql);
 	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T REMOVE THIS DEV EVENT }");
+	    Alert_FX.error("{ COULDN'T REMOVE THIS DEV EVENT }");
 	}
     }
 
@@ -73,7 +72,7 @@ public class DevEventsDAO implements InterfaceDAO<DevEvents> {
 	    }
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T LIST GAME EVENTS }");
+	    Alert_FX.error("{ COULDN'T LIST GAME EVENTS }");
 	}
 	return retrn;
     }
@@ -96,7 +95,7 @@ public class DevEventsDAO implements InterfaceDAO<DevEvents> {
 	    }
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
-	    System.err.println("{ IMPOSSIBLE TO VIEW A DEV EVENT }");
+	    Alert_FX.error("{ IMPOSSIBLE TO VIEW A DEV EVENT }");
 	}
 	return retrn;
     }
@@ -112,7 +111,7 @@ public class DevEventsDAO implements InterfaceDAO<DevEvents> {
 
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
-	    System.err.println("{ UNABLE TO DO TI }");
+	    Alert_FX.error("{ UNABLE TO DO TI }");
 	}
 
 	return id;

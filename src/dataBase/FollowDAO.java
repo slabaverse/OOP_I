@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import UI_FX.Alert_FX;
 import entities.Follow;
 
 public class FollowDAO implements InterfaceDAO<Follow> {
@@ -16,7 +17,7 @@ public class FollowDAO implements InterfaceDAO<Follow> {
 	    UtilBD.updateDB(sql);
 
 	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T ADD FRIEND }");
+	    Alert_FX.error("{ COULDN'T ADD FRIEND }");
 	}
     }
 
@@ -33,7 +34,7 @@ public class FollowDAO implements InterfaceDAO<Follow> {
 	    UtilBD.updateDB(sql);
 	    
 	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T REMOVE FRIEND }");
+	    Alert_FX.error("{ COULDN'T REMOVE FRIEND }");
 	}
     }
 
@@ -49,7 +50,7 @@ public class FollowDAO implements InterfaceDAO<Follow> {
 	    }
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T LIST FRIENDS }");
+	    Alert_FX.error("{ COULDN'T LIST FRIENDS }");
 	}
 	return retrn;
     }
@@ -65,7 +66,7 @@ public class FollowDAO implements InterfaceDAO<Follow> {
 
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
-	    System.err.println("{ UNABLE TO DO TI }");
+	    Alert_FX.error("{ UNABLE TO DO TI }");
 	}
 
 	return id;

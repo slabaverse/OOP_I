@@ -11,113 +11,88 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class EditEvents_FX extends Application {
     private Stage stage;
-	private Label nameLbl;
-	private Label birthLbl;
-	private Label nationalityLbl;
-	private Label sexLbl;
-	private Label heightLbl;
-	private TextField nameTxt;
-	private TextField birthTxt;
-	private TextField nationalityTxt;
-	private TextField heightTxt;
-	private Button saveBtn;
-	private Button cancelBtn;
-	private Pane pane;
-	private GameEvents gameEv;
-	
-	public EditEvents_FX(GameEvents gameEv) {
-		this.gameEv = gameEv;
-	}
-	
-//	@Override
-//	public void start(Stage stage) throws Exception {
-//		this.stage = stage;
-//		
-//		initComponents();
-//		configLayout();
-//		
-//		Scene scene = new Scene(pane);
-//		saveBtn.requestFocus();
-//		
-//		stage.setScene(scene);
-//		stage.getIcons().add(new Image("/img/fatflix-icon.png"));
-//		stage.setTitle("Fatflix");
-//		stage.setResizable(false);
-//		stage.show();
-//	}
-//	
-//	private void initComponents() {
-//		nameLbl = new Label("Name");
-//		nameLbl.styleProperty().set("-fx-text-fill: #FFF");
-//		
-//		birthLbl = new Label("Birth Date");
-//		birthLbl.styleProperty().set("-fx-text-fill: #FFF");
-//		
-//		nationalityLbl = new Label("Nationality");
-//		nationalityLbl.styleProperty().set("-fx-text-fill: #FFF");
-//		
-//		sexLbl = new Label("Sex");
-//		sexLbl.styleProperty().set("-fx-text-fill: #FFF");
-//		
-//		heightLbl = new Label("Height");
-//		heightLbl.styleProperty().set("-fx-text-fill: #FFF");
-//		
-//		nameTxt = new TextField();
-//		nameTxt.setText(actor.getName());
-//		nameTxt.setPromptText("Type the actor's name");
-//		nameTxt.styleProperty().set("-fx-text-fill: #32FF6B; -fx-border-color: #32FF6B; -fx-border-radius: 5; -fx-background-color: #3E3E3E;");
-//		
-//		birthTxt = new TextField();
-//		birthTxt.setText(actor.getBirthDate());
-//		birthTxt.setPromptText("Type the actor's birth date");
-//		birthTxt.styleProperty().set("-fx-text-fill: #32FF6B; -fx-border-color: #32FF6B; -fx-border-radius: 5; -fx-background-color: #3E3E3E;");
-//		
-//		nationalityTxt = new TextField();
-//		nationalityTxt.setText(actor.getNationality());
-//		nationalityTxt.setPromptText("Type the actor's nationality");
-//		nationalityTxt.styleProperty().set("-fx-text-fill: #32FF6B; -fx-border-color: #32FF6B; -fx-border-radius: 5; -fx-background-color: #3E3E3E;");
-//		
-//		heightTxt = new TextField();
-//		heightTxt.setText(String.valueOf(actor.getHeight()));
-//		heightTxt.setPromptText("Enter the actor's height");
-//		heightTxt.styleProperty().set("-fx-text-fill: #32FF6B; -fx-border-color: #32FF6B; -fx-border-radius: 5; -fx-background-color: #3E3E3E;");
-//		
-//		maleRadio = new RadioButton("Male");
-//		maleRadio.setToggleGroup(sexGroup);
-//		maleRadio.setOnAction(setMale());
-//		maleRadio.styleProperty().set("-fx-text-fill: #FFF");
-//		
-//		femaleRadio = new RadioButton("Female");
-//		femaleRadio.setToggleGroup(sexGroup);
-//		femaleRadio.setOnAction(setFemale());
-//		femaleRadio.styleProperty().set("-fx-text-fill: #FFF");
-//		
-//		if (actor.getSex().contentEquals("M")) {
-//			maleRadio.setSelected(true);
-//		} else if (actor.getSex().contentEquals("F")) {
-//			femaleRadio.setSelected(true);
-//		}
-//		
-//		saveBtn = new Button("Save");
-//		saveBtn.setOnAction(save());
-//		saveBtn.styleProperty().set("-fx-text-fill: #3E3E3E; -fx-border-color: #32FF6B; -fx-border-radius: 5; -fx-background-color: #32FF6B;");
-//		
-//		cancelBtn = new Button("Cancel");
-//		cancelBtn.setOnAction(cancel());
-//		cancelBtn.styleProperty().set("-fx-text-fill: #32FF6B; -fx-border-color: #32FF6B; -fx-border-radius: 5; -fx-background-color: #3E3E3E;");
-//		
-//		pane = new AnchorPane();
-//		pane.styleProperty().set("-fx-background-color: #3E3E3E");
-//		
-//		pane.getChildren().addAll(nameLbl, birthLbl, nationalityLbl, sexLbl, heightLbl, nameTxt, birthTxt, nationalityTxt, heightTxt, 
-//				maleRadio, femaleRadio, saveBtn, cancelBtn);
-//	}
+    private Label lblAddEvents;
+    private ImageView game;
+    private TextField eventNameTxt;
+    private TextField eventDateTxt;
+    private TextField eventLocalTxt;
+    private TextField eventDescriptionTxt;
+    private TextField gameNameTxt;
+    private Button saveBtn;
+    private Button cancelBtn;
+    private Pane pane;
+    private GameEvents gameEv;
+
+    public EditEvents_FX(GameEvents gameEv) {
+	this.gameEv = gameEv;
+    }
+
+    @Override
+    public void start(Stage stage) throws Exception {
+	this.stage = stage;
+
+	initComponents();
+	configLayout();
+
+	Scene scene = new Scene(pane);
+	saveBtn.requestFocus();
+
+	stage.setScene(scene);
+	stage.setTitle("Skynet");
+	stage.setResizable(false);
+	stage.show();
+    }
+
+    private void initComponents() {
+
+	eventNameTxt = new TextField();
+	eventNameTxt.setPromptText("EVENT NAME");
+	eventNameTxt.styleProperty().set(
+		"-fx-text-fill: #778899; -fx-border-color: #4169E1; -fx-border-radius: 0; -fx-background-color: #F8F8FF;");
+
+	eventDateTxt = new TextField();
+	eventDateTxt.setPromptText("SAVE THE DATE");
+	eventDateTxt.styleProperty().set(
+		"-fx-text-fill: #778899; -fx-border-color: #4169E1; -fx-border-radius: 0; -fx-background-color: #F8F8FF;");
+
+	eventLocalTxt = new TextField();
+	eventLocalTxt.setPromptText("EVENT LOCAL");
+	eventLocalTxt.styleProperty().set(
+		"-fx-text-fill: #778899; -fx-border-color: #4169E1; -fx-border-radius: 0; -fx-background-color: #F8F8FF;");
+
+	eventDescriptionTxt = new TextField();
+	eventDescriptionTxt.setPromptText("EVENT DESCRIPTION");
+	eventDescriptionTxt.styleProperty().set(
+		"-fx-text-fill: #778899; -fx-border-color: #4169E1; -fx-border-radius: 0; -fx-background-color: #F8F8FF;");
+
+	gameNameTxt = new TextField();
+	gameNameTxt.setPromptText("MAIN GAME NAME");
+	gameNameTxt.styleProperty().set(
+		"-fx-text-fill: #778899; -fx-border-color: #4169E1; -fx-border-radius: 0; -fx-background-color: #F8F8FF;");
+
+	saveBtn = new Button("SAVE");
+	saveBtn.setOnAction(save());
+	saveBtn.styleProperty().set(
+		"-fx-text-fill: #FFFFFF; -fx-border-color: #4169E1; -fx-border-radius: 0; -fx-background-color: #4169E1;");
+
+	cancelBtn = new Button("CANCEL");
+	cancelBtn.setOnAction(cancel());
+	cancelBtn.styleProperty().set(
+		"-fx-text-fill: #FFFFFF; -fx-border-color: #4169E1; -fx-border-radius: 0; -fx-background-color: #4169E1;");
+
+	pane = new AnchorPane();
+	pane.styleProperty().set("-fx-background-color: #3E3E3E");
+
+	pane.getChildren().addAll(nameLbl, birthLbl, nationalityLbl, sexLbl, heightLbl, nameTxt, birthTxt,
+		nationalityTxt, heightTxt, maleRadio, femaleRadio, saveBtn, cancelBtn);
+    }
 //	
 //	private void configLayout() {
 //		pane.setPrefSize(400, 260);

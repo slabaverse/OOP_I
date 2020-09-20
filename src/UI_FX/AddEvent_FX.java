@@ -2,17 +2,25 @@ package UI_FX;
 
 import dataBase.GameEventsDAO;
 import entities.GameEvents;
+import entities.User;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class AddEvent_FX {
     private Stage stage;
+    private Label lblAddEvents;
+    private ImageView game;
+    private User loggedUser;
     private TextField eventNameTxt;
     private TextField eventDateTxt;
     private TextField eventLocalTxt;
@@ -21,7 +29,11 @@ public class AddEvent_FX {
     private Button saveBtn;
     private Button cancelBtn;
     private Pane pane;
-
+    
+    public AddEvent_FX(User loggedUser) {
+	this.loggedUser = loggedUser;
+    }
+    
     public void start(Stage stage) throws Exception {
 	this.stage = stage;
 
@@ -32,12 +44,20 @@ public class AddEvent_FX {
 	saveBtn.requestFocus();
 
 	stage.setScene(scene);
+	stage.getIcons().add(new Image("/img/game.png"));
 	stage.setTitle("Skynet");
 	stage.setResizable(false);
 	stage.show();
     }
-
+    
     private void initComponents() {
+	
+	Image image = new Image("/img/game.png");
+	game = new ImageView(image);
+	
+	lblAddEvents = new Label("NEW GAME EVENTS");
+	lblAddEvents.setFont(new Font(40));
+	lblAddEvents.styleProperty().set("-fx-text-fill: #778899");
 
 	eventNameTxt = new TextField();
 	eventNameTxt.setPromptText("EVENT NAME");
@@ -64,7 +84,7 @@ public class AddEvent_FX {
 	gameNameTxt.styleProperty().set(
 		"-fx-text-fill: #778899; -fx-border-color: #4169E1; -fx-border-radius: 0; -fx-background-color: #F8F8FF;");
 
-	saveBtn = new Button("Save");
+	saveBtn = new Button("SAVE");
 	saveBtn.setOnAction(save());
 	saveBtn.styleProperty().set(
 		"-fx-text-fill: #FFFFFF; -fx-border-color: #4169E1; -fx-border-radius: 0; -fx-background-color: #4169E1;");
@@ -75,49 +95,54 @@ public class AddEvent_FX {
 		"-fx-text-fill: #FFFFFF; -fx-border-color: #4169E1; -fx-border-radius: 0; -fx-background-color: #4169E1;");
 
 	pane = new AnchorPane();
-	pane.styleProperty().set("-fx-background-color: #3E3E3E");
+	pane.styleProperty().set("-fx-background-color: #F2F8D2");
 
-	pane.getChildren().addAll(eventNameTxt, eventDateTxt, eventLocalTxt, eventDescriptionTxt, gameNameTxt, saveBtn,
+	pane.getChildren().addAll(lblAddEvents, game, eventNameTxt, eventDateTxt, eventLocalTxt, eventDescriptionTxt, gameNameTxt, saveBtn,
 		cancelBtn);
     }
 
     private void configLayout() {
-	pane.setPrefSize(400, 260);
+	pane.setPrefSize(1000, 600);
+	
+	game.setLayoutX(450);
+	
+	lblAddEvents.setLayoutX(30);
+	lblAddEvents.setLayoutY(30);
 
-	eventNameTxt.setLayoutX(22);
-	eventNameTxt.setLayoutY(165);
-	eventNameTxt.setPrefHeight(50);
-	eventNameTxt.setPrefWidth((pane.getPrefWidth() - 60) / 2);
+	eventNameTxt.setLayoutX(30);
+	eventNameTxt.setLayoutY(160);
+	eventNameTxt.setPrefHeight(40);
+	eventNameTxt.setPrefWidth((pane.getPrefWidth() - 60)/2);
 
-	eventDateTxt.setLayoutX(20);
-	eventDateTxt.setLayoutY(100);
-	eventDateTxt.setPrefHeight(20);
-	eventDateTxt.setPrefWidth((pane.getPrefWidth() - 60) / 2);
+	eventDateTxt.setLayoutX(30);
+	eventDateTxt.setLayoutY(220);
+	eventDateTxt.setPrefHeight(40);
+	eventDateTxt.setPrefWidth((pane.getPrefWidth() - 60)/2);
 
-	eventLocalTxt.setLayoutX(210);
-	eventLocalTxt.setLayoutY(100);
-	eventLocalTxt.setPrefHeight(20);
+	eventLocalTxt.setLayoutX(30);
+	eventLocalTxt.setLayoutY(280);
+	eventLocalTxt.setPrefHeight(40);
 	eventLocalTxt.setPrefWidth((pane.getPrefWidth() - 60) / 2);
 
-	eventDescriptionTxt.setLayoutX(20);
-	eventDescriptionTxt.setLayoutY(160);
-	eventDescriptionTxt.setPrefHeight(20);
+	eventDescriptionTxt.setLayoutX(30);
+	eventDescriptionTxt.setLayoutY(340);
+	eventDescriptionTxt.setPrefHeight(40);
 	eventDescriptionTxt.setPrefWidth((pane.getPrefWidth() - 60) / 2);
 
-	gameNameTxt.setLayoutX(210);
-	gameNameTxt.setLayoutY(190);
-	gameNameTxt.setPrefHeight(20);
+	gameNameTxt.setLayoutX(30);
+	gameNameTxt.setLayoutY(400);
+	gameNameTxt.setPrefHeight(40);
 	gameNameTxt.setPrefWidth((pane.getPrefWidth() - 60) / 2);
 
-	saveBtn.setLayoutX(20);
-	saveBtn.setLayoutY(210);
-	saveBtn.setPrefHeight(20);
-	saveBtn.setPrefWidth((pane.getPrefWidth() - 60) / 2);
+	saveBtn.setLayoutX(30);
+	saveBtn.setLayoutY(460);
+	saveBtn.setPrefHeight(40);
+	saveBtn.setPrefWidth((pane.getPrefWidth() - 20) / 4);
 
-	cancelBtn.setLayoutX(210);
-	cancelBtn.setLayoutY(210);
-	cancelBtn.setPrefHeight(20);
-	cancelBtn.setPrefWidth((pane.getPrefWidth() - 60) / 2);
+	cancelBtn.setLayoutX(30);
+	cancelBtn.setLayoutY(520);
+	cancelBtn.setPrefHeight(40);
+	cancelBtn.setPrefWidth((pane.getPrefWidth() - 20) / 4);
 
     }
 
@@ -127,39 +152,40 @@ public class AddEvent_FX {
 	    public void handle(ActionEvent event) {
 		try {
 		    
+		    
 		    if (eventNameTxt.getText().isEmpty()) {
-			Alert_FX.alert("Name field is empty");
+			Alert_FX.alert("EVENT WITHOUT NAME?");
 			return;
 		    }
 		    if (eventDateTxt.getText().isEmpty()) {
-			Alert_FX.alert("Birth date field is empty");
+			Alert_FX.alert("PEOPLE CLAIM FOR A DATE");
 			return;
 		    }
 		    if (eventLocalTxt.getText().isEmpty()) {
-			Alert_FX.alert("Nationality field is empty");
+			Alert_FX.alert("LOCAL, TO SET MY GPS");
 			return;
 		    }
 		    if (eventDescriptionTxt.getText().isEmpty()) {
-			Alert_FX.alert("Height field is empty");
+			Alert_FX.alert("TELL ME MORE");
 			return;
 		    } 
 		    if (gameNameTxt.getText().isEmpty()) {
-			Alert_FX.alert("Height field is empty");
+			Alert_FX.alert("WICH GAME?");
 			return;
 		    }
 
-//		    new GameEventsDAO().add(new GameEvents(loggedUser, eventNameTxt.getText(), eventDateTxt.getText(),
-//			    eventLocalTxt.getText(), eventDescriptionTxt.getText(), gameNameTxt.getText()));
+		    new GameEventsDAO().add(new GameEvents(loggedUser , eventNameTxt.getText(), eventDateTxt.getText(),
+			    eventLocalTxt.getText(), eventDescriptionTxt.getText(), gameNameTxt.getText()));
 
-		    openActorWindow();
+		    openEventScreen();
 		} catch (Exception e) {
-		    Alert_FX.error("Inable to save the actor!");
+		    Alert_FX.error("I COULDN'T SAVE THIS NEW EVENT");
 		}
 	    }
 	};
     }
 
-    private void openActorWindow() {
+    private void openEventScreen() {
 	try {
 	    new GameEvents_FX().start(stage);
 	} catch (Exception e) {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import UI_FX.Alert_FX;
 import UI_FX.Login_FX;
 import dataBase.DevEventsDAO;
 import dataBase.FollowDAO;
@@ -168,7 +169,7 @@ public class Main {
 			break;
 		    case 2:
 			if (userDAO.getPost(loggedUser).isEmpty()) {
-			    System.out.println("{YOU DON'T HAVE ANY POST YET}");
+			    Alert_FX.info("{YOU DON'T HAVE ANY POST YET}");
 			} else {
 			    List<Post> postList = userDAO.getPost(loggedUser);
 			    for (i = 0; i < postList.size(); i++) {
@@ -201,7 +202,7 @@ public class Main {
 				    sc.nextLine();
 				    postNumRemove--;
 				    postDAO.remove(postList.get(postNumRemove));
-				    System.out.println("{ POST DELETED }");
+				    Alert_FX.info("{ POST DELETED }");
 				    break;
 				case 3:
 				    break;
@@ -248,7 +249,7 @@ public class Main {
 			break;
 		    case 2:
 			if (userDAO.getMarketplace(loggedUser).isEmpty()) {
-			    System.out.println("{YOU DON'T HAVE ANY PRODUCTS YET}");
+			    Alert_FX.info("{YOU DON'T HAVE ANY PRODUCTS YET}");
 			} else {
 			    List<Marketplace> mktList = userDAO.getMarketplace(loggedUser);
 			    for (i = 0; i < mktList.size(); i++) {
@@ -290,7 +291,7 @@ public class Main {
 				    sc.nextLine();
 				    mktNumRemove--;
 				    marketplaceDAO.remove(mktList.get(mktNumRemove));
-				    System.out.println("{ PRODUCT DELETED }");
+				    Alert_FX.info("{ PRODUCT DELETED }");
 				    break;
 				case 3:
 				    break;
@@ -437,7 +438,7 @@ public class Main {
 			break;
 		    case 2:
 			if (userDAO.getDevEvents(loggedUser).isEmpty()) {
-			    System.out.println("{YOU DON'T HAVE ANY DEV EVENT YET}");
+			    Alert_FX.info("{YOU DON'T HAVE ANY DEV EVENT YET}");
 			} else {
 			    List<DevEvents> devList = userDAO.getDevEvents(loggedUser);
 			    for (i = 0; i < devList.size(); i++) {
@@ -481,7 +482,7 @@ public class Main {
 				    sc.nextLine();
 				    devNumRemove--;
 				    devEventsDAO.remove(devList.get(devNumRemove));
-				    System.out.println("{ EVENT DELETED }");
+				    Alert_FX.info("{ EVENT DELETED }");
 				    break;
 				case 3:
 				    break;
@@ -491,7 +492,7 @@ public class Main {
 			break;
 		    case 3:
 			if (userDAO.getGameEvents(loggedUser).isEmpty()) {
-			    System.out.println("{YOU DON'T HAVE ANY GAME EVENT YET}");
+			    Alert_FX.info("{YOU DON'T HAVE ANY GAME EVENT YET}");
 			} else {
 			    List<GameEvents> gameList = userDAO.getGameEvents(loggedUser);
 			    for (i = 0; i < gameList.size(); i++) {
@@ -540,7 +541,7 @@ public class Main {
 				    sc.nextLine();
 				    gameNumRemove--;
 				    gameEventsDAO.remove(gameList.get(gameNumRemove));
-				    System.out.println("{ EVENT DELETED }");
+				    Alert_FX.info("{ EVENT DELETED }");
 				    break;
 				case 3:
 				    break;

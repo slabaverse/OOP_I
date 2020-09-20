@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import UI_FX.Alert_FX;
+
 public class UtilBD {
     private static Connection conection;
 
@@ -19,7 +21,7 @@ public class UtilBD {
 		openConection();
 
 	} catch (SQLException e) {
-	    System.err.println("{ ERROR: COULDN'T OPEN DATABASE CONECTION }");
+	    Alert_FX.error("{ ERROR: COULDN'T OPEN DATABASE CONECTION }");
 	}
 
 	return conection;
@@ -30,9 +32,9 @@ public class UtilBD {
 	    Class.forName("org.sqlite.JDBC");
 	    conection = DriverManager.getConnection("jdbc:sqlite:banco.sqlite");
 	} catch (SQLException e) {
-	    System.err.println("{ ERROR: COULDN'T OPEN DATABASE CONECTION }");
+	    Alert_FX.error("{ ERROR: COULDN'T OPEN DATABASE CONECTION }");
 	} catch (ClassNotFoundException e2) {
-	    System.err.println("{ ERROR: PROBLEM WITH SQL LIB }");
+	    Alert_FX.error("{ ERROR: PROBLEM WITH SQL LIB }");
 	}
     }
 
@@ -44,7 +46,7 @@ public class UtilBD {
 	    if (!conection.isClosed())
 		conection.close();
 	} catch (SQLException e) {
-	    System.err.println("{ ERROR: COULDN'T CREATE DATABASE CONNECTION }");
+	    Alert_FX.error("{ ERROR: COULDN'T CREATE DATABASE CONNECTION }");
 	}
     }
 
@@ -65,7 +67,7 @@ public class UtilBD {
 	    stm.executeUpdate("PRAGMA foreign_keys=ON");
 	    stm.close();
 	} catch (SQLException e) {
-	    System.err.println("{ ERROR: COULDN'T CREATE DATABASE }");
+	    Alert_FX.error("{ ERROR: COULDN'T CREATE DATABASE }");
 	    System.out.println(e);
 	}
     }
@@ -94,17 +96,17 @@ public class UtilBD {
     private static void createGameEvents(Statement stm) throws SQLException {
 	stm.executeUpdate("DROP TABLE IF EXISTS GameEvents");
 	stm.executeUpdate("CREATE TABLE GameEvents (id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,"
-		+ "username VARCHAR(50)," + "eventName VARCHAR(150) NOT NULL," + "eventDate VARCHAR(10) NOT NULL,"
+		+ "eventName VARCHAR(150) NOT NULL," + "eventDate VARCHAR(10) NOT NULL,"
 		+ "eventLocal VARCHAR(150) NOT NULL," + "eventDescription VARCHAR(300) NOT NULL,"
-		+ "gameName VARCHAR(150) NOT NULL, "
-		+ "CONSTRAINT username FOREIGN KEY (username) REFERENCES User (username) ON UPDATE CASCADE ON DELETE CASCADE);");
+		+ "gameName VARCHAR(150) NOT NULL);");
+		//+ "CONSTRAINT username FOREIGN KEY (username) REFERENCES User (username) ON UPDATE CASCADE ON DELETE CASCADE);");
 	stm.executeUpdate(
-		"INSERT INTO GameEvents (username, eventName, eventDate, eventLocal, eventDescription, GameName) "
-			+ "VALUES('@angela','CSGO Championship','10/11/2020','Alianz Arena - München, DE',"
+		"INSERT INTO GameEvents (eventName, eventDate, eventLocal, eventDescription, GameName) "
+			+ "VALUES('CSGO Championship','10/11/2020','Alianz Arena - München, DE',"
 			+ "'The great Deutsch Counter Strike Championship is finally here!','Counter Strike Global Offensive')");
 	stm.executeUpdate(
-		"INSERT INTO GameEvents (username, eventName, eventDate, eventLocal, eventDescription, GameName) "
-			+ "VALUES('@adam','The Crazy FortNite','14/11/2020','Alianz Arena - München, DE',"
+		"INSERT INTO GameEvents (eventName, eventDate, eventLocal, eventDescription, GameName) "
+			+ "VALUES('The Crazy FortNite','14/11/2020','Alianz Arena - München, DE',"
 			+ "'A FortNite event, join with your squad!','FortNite')");
     }
 

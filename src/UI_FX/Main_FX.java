@@ -1,5 +1,6 @@
 package UI_FX;
 
+import entities.User;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -18,7 +19,7 @@ public class Main_FX extends Application {
     private Pane pane;
     private Label lblUser;
     private ImageView profile;
-    private String loggedUser;
+    private User loggedUser;
     private Button btnUserSettings;
     private Button btnPost;
     private Button btnMarketplace;
@@ -26,9 +27,7 @@ public class Main_FX extends Application {
     private Button btnEvents;
     private Button btnExit;
 
-    public Main_FX(String loggedUser) {
-	if (loggedUser.isBlank())
-	    loggedUser = "ERROR: MISSING USERNAME";
+    public Main_FX(User loggedUser) {
 	this.loggedUser = loggedUser;
     }
 
@@ -55,7 +54,7 @@ public class Main_FX extends Application {
 	Image image = new Image("/img/profile.png");
 	profile = new ImageView(image);
 
-	lblUser = new Label(loggedUser);
+	lblUser = new Label(loggedUser.getUsername());
 	lblUser.setFont(new Font(40));
 	lblUser.styleProperty().set("-fx-text-fill: #4169E1");
 
@@ -137,7 +136,7 @@ public class Main_FX extends Application {
 	    @Override
 	    public void handle(ActionEvent event) {
 		try {
-		    new GameEvents_FX().start(stage);
+		    new GameEvents_FX(loggedUser).start(stage);
 		} catch (Exception e) {
 		    Alert_FX.error("WHERE'S THE GAME EVENTS SCREEN?");
 		}

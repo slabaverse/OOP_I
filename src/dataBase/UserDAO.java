@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import UI_FX.Alert_FX;
 import entities.DevEvents;
 import entities.GameEvents;
 import entities.Marketplace;
@@ -22,7 +23,7 @@ public class UserDAO implements InterfaceDAO<User> {
 	    UtilBD.updateDB(sql);
 
 	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T ADD THIS USER }");
+	    Alert_FX.error("{ COULDN'T ADD THIS USER }");
 	}
     }
 
@@ -35,7 +36,7 @@ public class UserDAO implements InterfaceDAO<User> {
 		    + user.getId() + ";";
 	    UtilBD.updateDB(sql);
 	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T SET USER }");
+	    Alert_FX.error("{ COULDN'T SET USER }");
 	}
     }
 
@@ -45,7 +46,7 @@ public class UserDAO implements InterfaceDAO<User> {
 	    String sql = "DELETE FROM User WHERE id = '" + user.getId() + "'";
 	    UtilBD.updateDB(sql);
 	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T REMOVE THIS USER }");
+	    Alert_FX.error("{ COULDN'T REMOVE THIS USER }");
 	}
     }
 
@@ -66,7 +67,7 @@ public class UserDAO implements InterfaceDAO<User> {
 	    }
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T LIST USERS }");
+	    Alert_FX.error("{ COULDN'T LIST USERS }");
 	}
 	return retrn;
     }
@@ -83,7 +84,7 @@ public class UserDAO implements InterfaceDAO<User> {
 	    }
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
-	    System.err.println("{ IMPOSSIBLE TO VIEW USER}");
+	    Alert_FX.error("{ IMPOSSIBLE TO VIEW USER}");
 	}
 	return retrn;
     }
@@ -100,7 +101,7 @@ public class UserDAO implements InterfaceDAO<User> {
 	    }
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
-	    System.err.println("{ IMPOSSIBLE TO VIEW USER}");
+	    Alert_FX.error("{ IMPOSSIBLE TO VIEW USER}");
 	}
 	return retrn;
     }
@@ -117,7 +118,7 @@ public class UserDAO implements InterfaceDAO<User> {
 	    }
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
-	    System.err.println("{ IMPOSSIBLE TO VIEW USER}");
+	    Alert_FX.error("{ IMPOSSIBLE TO VIEW USER}");
 	}
 	return retrn;
     }
@@ -138,7 +139,7 @@ public class UserDAO implements InterfaceDAO<User> {
 			
 			resultSet.getStatement().close();
 		} catch (SQLException e) {
-			System.err.println("{ IMPOSSIBLE TO VIEW USER }");
+		    Alert_FX.error("{ IMPOSSIBLE TO VIEW USER }");
 		}
 		
 		return result;
@@ -163,7 +164,7 @@ public class UserDAO implements InterfaceDAO<User> {
 	    }
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T SHOW MARKETPLACE }");
+	    Alert_FX.error("{ COULDN'T SHOW MARKETPLACE }");
 	}
 	return marketplace;
     }
@@ -184,7 +185,7 @@ public class UserDAO implements InterfaceDAO<User> {
 	    }
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T SHOW POSTS }");
+	    Alert_FX.error("{ COULDN'T SHOW POSTS }");
 	}
 	return post;
     }
@@ -210,7 +211,7 @@ public class UserDAO implements InterfaceDAO<User> {
 	    }
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T SHOW DEV EVENTS }");
+	    Alert_FX.error("{ COULDN'T SHOW DEV EVENTS }");
 	}
 	return devEvents;
     }
@@ -237,7 +238,7 @@ public class UserDAO implements InterfaceDAO<User> {
 	    }
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T SHOW GAME EVENTS }");
+	    Alert_FX.error("{ COULDN'T SHOW GAME EVENTS }");
 	}
 	return gameEvents;
     }
@@ -262,7 +263,7 @@ public class UserDAO implements InterfaceDAO<User> {
 	    }
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T SHOW FOLLOWED }");
+	    Alert_FX.error("{ COULDN'T SHOW FOLLOWED }");
 	}
 	return followed;
     }
@@ -278,7 +279,7 @@ public class UserDAO implements InterfaceDAO<User> {
 
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
-	    System.err.println("{ UNABLE TO DO TI }");
+	    Alert_FX.error("{ UNABLE TO DO TI }");
 	}
 
 	return id;

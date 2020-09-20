@@ -5,7 +5,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import UI_FX.Alert_FX;
 import entities.GameEvents;
+import entities.User;
 
 public class GameEventsDAO implements InterfaceDAO<GameEvents> {
 
@@ -23,7 +25,7 @@ public class GameEventsDAO implements InterfaceDAO<GameEvents> {
 	    UtilBD.updateDB(sql);
 
 	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T ADD THIS GAME EVENT }");
+	    Alert_FX.error("{ COULDN'T ADD THIS GAME EVENT }");
 	}
     }
 
@@ -37,20 +39,21 @@ public class GameEventsDAO implements InterfaceDAO<GameEvents> {
 		    + ";";
 	    UtilBD.updateDB(sql);
 	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T SET THIS GAME EVENT }");
+	    Alert_FX.error("{ COULDN'T SET THIS GAME EVENT }");
 	}
     }
 
     @Override
     public void remove(GameEvents gameEvents) {
 	try {
-	    String sql = "DELETE FROM GameEvents WHERE id = '" + gameEvents.getEventId() + "'";
+	    String sql = "DELETE FROM GameEvents WHERE id = " + gameEvents.getEventId() + ";";
 	    UtilBD.updateDB(sql);
 
-	    sql = "DELETE FROM UserGameEvents WHERE gameevents_fk = '" + gameEvents.getEventId() + "'";
+	    sql = "DELETE FROM UserGameEvents WHERE gameevents_fk = " + gameEvents.getEventId() + ";";
 	    UtilBD.updateDB(sql);
 	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T REMOVE THIS GAME EVENT }");
+	    Alert_FX.error("{ COULDN'T REMOVE THIS GAME EVENT }");
+	    System.out.println(e);
 	}
     }
 
@@ -58,22 +61,34 @@ public class GameEventsDAO implements InterfaceDAO<GameEvents> {
     public List<GameEvents> all() {
 	List<GameEvents> retrn = new ArrayList<GameEvents>();
 	try {
-	    String sql = "SELECT id, username, eventName, eventDate, eventLocal, eventDescription, gameName FROM GameEvents";
+	    String sql = "SELECT id, eventName, eventDate, eventLocal, eventDescription, gameName FROM GameEvents";
 	    ResultSet resultSet = UtilBD.consultDB(sql);
 	    while (resultSet.next()) {
 		Integer id = resultSet.getInt("id");
-		String username = resultSet.getString("username");
 		String eventName = resultSet.getString("eventName");
 		String eventDate = resultSet.getString("eventDate");
 		String eventLocal = resultSet.getString("eventLocal");
 		String eventDescription = resultSet.getString("eventDescription");
 		String gameName = resultSet.getString("gameName");
-		retrn.add(new GameEvents(id, new UserDAO().getByName(username), eventName, eventDate, eventLocal,
-			eventDescription, gameName));
+
+		sql = "SELECT user_fk FROM UserGameEvents WHERE gameevents_fk = " + resultSet.getInt("id") + ";";
+		ResultSet gameUserName = UtilBD.consultDB(sql);
+		while (gameUserName.next()) {
+		    sql = "SELECT username FROM User WHERE id = " + gameUserName.getInt("user_fk") + ";";
+		    ResultSet gUserName = UtilBD.consultDB(sql);
+		    retrn.add(new GameEvents(new User(gUserName.getString("username")), id, eventName, eventDate,
+			    eventLocal, eventDescription, gameName));
+
+		    gUserName.getStatement().close();
+		}
+
+		gameUserName.getStatement().close();
+
 	    }
+
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
-	    System.err.println("{ COULDN'T LIST GAME EVENTS }");
+	    Alert_FX.error("{ COULDN'T LIST GAME EVENTS }");
 	}
 	return retrn;
     }
@@ -81,8 +96,8 @@ public class GameEventsDAO implements InterfaceDAO<GameEvents> {
     public GameEvents get(Integer id) {
 	GameEvents retrn = null;
 	try {
-	    String sql = "SELECT id, username, eventName, eventDate, eventLocal, eventDescription, gameName FROM GameEvents WHERE id = '"
-		    + id + "'";
+	    String sql = "SELECT id, username, eventName, eventDate, eventLocal, eventDescription, gameName FROM GameEvents WHERE id = "
+		    + id + ";";
 	    ResultSet resultSet = UtilBD.consultDB(sql);
 	    while (resultSet.next()) {
 		Integer idGe = resultSet.getInt("id");
@@ -97,7 +112,7 @@ public class GameEventsDAO implements InterfaceDAO<GameEvents> {
 	    }
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
-	    System.err.println("{ IMPOSSIBLE TO VIEW A GAME EVENT }");
+	    Alert_FX.error("{ IMPOSSIBLE TO VIEW A GAME EVENT }");
 	}
 	return retrn;
     }
@@ -130,7 +145,7 @@ public class GameEventsDAO implements InterfaceDAO<GameEvents> {
 
 	    resultSet.getStatement().close();
 	} catch (SQLException e) {
-	    System.err.println("{ UNABLE TO DO TI }");
+	    Alert_FX.error("{ UNABLE TO DO TI }");
 	}
 
 	return id;
